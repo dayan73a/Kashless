@@ -1,0 +1,80 @@
+.payment-container {
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.payment-info {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.payment-info p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.simulation-warning {
+    color: #ff9800;
+    font-weight: bold;
+    background: #fff3e0;
+    padding: 8px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.activate-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.activate-btn:hover:not(:disabled) {
+    background: #45a049;
+}
+
+.activate-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.scanning-status {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.devices-list {
+    margin-top: 10px;
+}
+
+.device-item {
+    padding: 10px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.device-item strong {
+    color: #2c3e50;
+}
+
+.device-item small {
+    color: #6c757d;
+    font-family: monospace;
+}
