@@ -1,26 +1,28 @@
+// vite.config.js
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 
+// Config minimal y estable. Quitamos Babel del medio.
 export default defineConfig({
   plugins: [react()],
-  define: {
-    global: 'globalThis', // Polyfill para global
-  },
+
+  // Alias para librerías que esperan APIs de Node en el navegador (ya las tienes instaladas)
   resolve: {
     alias: {
-      // Polyfills para módulos de React Native
-      'react-native': 'react-native-web',
-      'stream': 'stream-browserify',
-      'buffer': 'buffer',
-      'crypto': 'crypto-browserify',
+      stream: 'stream-browserify',
+      crypto: 'crypto-browserify',
+      buffer: 'buffer',
     },
   },
+
+  // Pequeños polyfills para que no fallen librerías que acceden a process/global
+  define: {
+    'process.env': {},
+    global: 'globalThis',
+  },
+
+  // Forzamos a Vite a pre-empacar estos polyfills (evita warnings)
   optimizeDeps: {
-    esbuildOptions: {
-      // Definir global para esbuild
-      define: {
-        global: 'globalThis',
-      },
-    },
+    include: ['buffer', 'stream-browserify', 'crypto-browserify'],
   },
 })

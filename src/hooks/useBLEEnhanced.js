@@ -1,167 +1,249 @@
-import { useState, useCallback } from 'react'
-import usePlatform from './usePlatform'
+// src/hooks/useBLEEnhanced.js
+// Hook BLE completo para Kashless (Web Bluetooth + helpers de alto nivel)
+// - Escaneo (picker nativo)
+// - Conexión GATT
+// - Escritura a characteristic (chunking 20 bytes)
+// - Helpers: sendTime / sendCredits / sendStart / sendStop
+// - Reconexión automática y limpieza segura
 
-const useBLEEnhanced = () => {
-  const { isWeb } = usePlatform()
-  const [devices, setDevices] = useState([])
-  const [connectedDevice, setConnectedDevice] = useState(null)
-  const [isScanning, setIsScanning] = useState(false)
+import { useEffect, useRef, useState } from "react";
 
-  // Versión Web (Simulación) - MEJORADA
-  const webScanForDevices = useCallback(() => {
-    setIsScanning(true)
-    
-    // Dispositivos simulados con estructura más completa
-    const simulatedDevices = [
-      { 
-        id: 'esp32-simulado-01', 
-        name: 'Kashless_Machine_01',
-        localName: 'Kashless_Machine_01',
-        // Añadimos esta propiedad para compatibilidad
-        deviceName: 'Kashless_Machine_01',
-        connect: async () => {
-          console.log('✅ Conectado a ESP32 simulado')
-          return { 
-            discoverAllServicesAndCharacteristics: async () => {
-              console.log('🔍 Servicios descubiertos')
-            }
-          }
-        }
-      },
-      { 
-        id: 'esp32-simulado-02', 
-        name: 'Kashless_Machine_02',
-        localName: 'Kashless_Machine_02',
-        // Añadimos esta propiedad para compatibilidad
-        deviceName: 'Kashless_Machine_02',
-        connect: async () => {
-          console.log('✅ Conectado a ESP32 simulado 2')
-          return { 
-            discoverAllServicesAndCharacteristics: async () => {
-              console.log('🔍 Servicios descubiertos')
-            }
-          }
-        }
-      }
-    ]
+// 🔧 PON AQUÍ TUS UUIDs (los que anuncia tu ESP32 como servidor GATT)
+const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+const CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 
-    setDevices(simulatedDevices)
-    
-    setTimeout(() => {
-      setIsScanning(false)
-      console.log('🔍 Escaneo completado - Dispositivos encontrados:', simulatedDevices.length)
-      console.log('📋 Dispositivos:', simulatedDevices.map(d => d.name || d.localName || d.deviceName))
-    }, 1500) // Reducido a 1.5 segundos para mejor experiencia
-    
-    return simulatedDevices; // Devolvemos los dispositivos para testing
-  }, [])
+// Tamaño típico seguro para BLE (muchos stacks limitan a ~20 bytes por write)
+const MAX_CHUNK_LEN = 20;
 
-  // Versión Móvil (Real) - MEJORADA
-  const mobileScanForDevices = useCallback(() => {
-    console.log('📱 Escaneo BLE real en dispositivo móvil')
-    setIsScanning(true)
-    
-    // En móvil, intentamos usar el escaneo real primero
-    if (window.ble) {
-      // Código para escaneo real con react-native-ble-plx
-      console.log('📡 Iniciando escaneo BLE real...')
-      // Tu implementación real aquí
-    } else {
-      // Fallback a simulación si no está disponible
-      console.log('⚠️  Usando simulación BLE (modo desarrollo)')
-      return webScanForDevices()
-    }
-  }, [webScanForDevices])
+export default function useBLEEnhanced() {
+  // Estado público
+  const [devices, setDevices] = useState([]);
+  const [isScanning, setIsScanning] = useState(false);
+  const [connectedDevice, setConnectedDevice] = useState(null);
 
-  const scanForDevices = isWeb ? webScanForDevices : mobileScanForDevices
+  // Detección soporte Web Bluetooth
+  const isWeb = typeof navigator !== "undefined" && !!navigator.bluetooth;
 
-  const connectToDevice = useCallback(async (device) => {
+  // Refs para mantener conexión viva entre renders
+  const chosenDeviceRef = useRef(null);   // BluetoothDevice nativo elegido
+  const gattRef = useRef(null);           // BluetoothRemoteGATTServer
+  const serviceRef = useRef(null);        // BluetoothRemoteGATTService
+  const writeCharRef = useRef(null);      // BluetoothRemoteGATTCharacteristic
+
+  // ——————————————————————————
+  // Utilidades privadas
+  // ——————————————————————————
+  const isFn = (f) => typeof f === "function";
+
+  function log(...args) {
+    // Cambia a console.debug si prefieres menos ruido
+    console.log("[BLE]", ...args);
+  }
+
+  function handleDisconnected() {
+    log("🧹 Disconnected");
     try {
-      console.log('🔗 Conectando a:', device.name || device.localName || device.deviceName)
-      
-      // Para dispositivos simulados
-      if (device.connect) {
-        const connected = await device.connect()
-        if (connected.discoverAllServicesAndCharacteristics) {
-          await connected.discoverAllServicesAndCharacteristics()
-        }
-        setConnectedDevice(connected)
-        console.log('✅ Conexión exitosa')
-        return connected
+      gattRef.current?.disconnect?.();
+    } catch (_) {}
+    gattRef.current = null;
+    serviceRef.current = null;
+    writeCharRef.current = null;
+    setConnectedDevice(null);
+  }
+
+  async function prepareGatt(devLike) {
+    // devLike puede ser el "entry" que guardamos o el BluetoothDevice nativo
+    const native = devLike?.__native || devLike;
+    if (!native) throw new Error("Device inválido");
+    if (!native.gatt) throw new Error("El dispositivo no expone GATT");
+
+    // 1) Conectar
+    log("🔗 Conectando GATT…");
+    const gatt = await native.gatt.connect();
+    gattRef.current = gatt;
+
+    // 2) Servicio y characteristic
+    const service = await gatt.getPrimaryService(SERVICE_UUID);
+    serviceRef.current = service;
+
+    const characteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
+    writeCharRef.current = characteristic;
+
+    // 3) Evento de desconexión (limpiar antes de volver a añadir)
+    try {
+      native.removeEventListener?.("gattserverdisconnected", handleDisconnected);
+    } catch (_) {}
+    try {
+      native.addEventListener?.("gattserverdisconnected", handleDisconnected);
+    } catch (_) {}
+
+    // 4) Guardar device activo
+    chosenDeviceRef.current = native;
+    setConnectedDevice({
+      id: native.id,
+      name: native.name || devLike?.name || "Dispositivo",
+      gatt,
+    });
+
+    log("✅ GATT listo");
+    return native;
+  }
+
+  async function ensureReady() {
+    // Si ya tenemos characteristic y conexión viva → OK
+    if (writeCharRef.current && gattRef.current?.connected) return;
+
+    // Si se cayó, pero conocemos el device → reconectar
+    const dev = chosenDeviceRef.current;
+    if (!dev) throw new Error("No hay dispositivo conectado");
+    await prepareGatt({ __native: dev, name: dev.name });
+  }
+
+  async function writeBuffer(buffer) {
+    await ensureReady();
+    const char = writeCharRef.current;
+    if (!char) throw new Error("Characteristic no disponible");
+
+    // Algunos stacks exigen fragmentar >20 bytes
+    const total = buffer.byteLength;
+    if (total <= MAX_CHUNK_LEN) {
+      if (isFn(char.writeValueWithoutResponse)) {
+        await char.writeValueWithoutResponse(buffer);
       } else {
-        // Para dispositivos reales (aquí iría tu código de conexión real)
-        console.log('📱 Conectando a dispositivo real...')
-        // Tu implementación real de conexión BLE
-        setConnectedDevice(device)
-        return device
+        await char.writeValue(buffer);
       }
-    } catch (error) {
-      console.error('❌ Error conectando:', error)
-      throw error
+      return;
     }
-  }, [])
 
-  const sendCommand = useCallback(async (command) => {
-    if (!connectedDevice) throw new Error('No device connected')
-    
-    console.log('📤 Enviando comando:', command)
-    
-    if (isWeb) {
-      // Simulación para web mejorada
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          console.log('✅ Comando ejecutado:', command)
-          
-          // Simular respuesta del ESP32
-          if (command === 'START') {
-            console.log('💡 LED encendido (simulado)')
-          } else if (command === 'STOP') {
-            console.log('💡 LED apagado (simulado)')
-          } else if (command.startsWith('TIME:')) {
-            const minutes = command.split(':')[1]
-            console.log(`⏰ Tiempo programado: ${minutes} minutos (simulado)`)
-          }
-          
-          resolve({ success: true, command })
-        }, 800) // Reducido a 0.8 segundos
-      })
-    } else {
-      // Código real para móvil
-      console.log('📱 Enviando comando real a dispositivo móvil')
-      // Tu implementación real para enviar comandos BLE
-      return Promise.resolve({ success: true })
+    // Fragmentación en trozos de 20 bytes
+    for (let i = 0; i < total; i += MAX_CHUNK_LEN) {
+      const chunk = buffer.slice(i, i + MAX_CHUNK_LEN);
+      if (isFn(char.writeValueWithoutResponse)) {
+        await char.writeValueWithoutResponse(chunk);
+      } else {
+        await char.writeValue(chunk);
+      }
+      // Pequeño respiro entre trozos (algunos stacks lo agradecen)
+      await new Promise((r) => setTimeout(r, 10));
     }
-  }, [connectedDevice, isWeb])
+  }
 
-  const disconnectDevice = useCallback(async () => {
-    if (connectedDevice && connectedDevice.cancelConnection) {
-      // Para dispositivos reales
-      await connectedDevice.cancelConnection()
+  // ——————————————————————————
+  // API pública del hook
+  // ——————————————————————————
+
+  // ESCANEAR (picker nativo)
+  async function scanForDevices() {
+    if (!isWeb) {
+      log("⚠️ Web Bluetooth no soportado en este navegador/dispositivo.");
+      return;
     }
-    setConnectedDevice(null)
-    console.log('🔌 Dispositivo desconectado')
-  }, [connectedDevice])
+    try {
+      setIsScanning(true);
+      setDevices([]); // limpiar listado
 
-  // Función auxiliar para buscar dispositivo por nombre
-  const findDeviceByName = useCallback((name) => {
-    return devices.find(device => 
-      (device.name && device.name === name) ||
-      (device.localName && device.localName === name) ||
-      (device.deviceName && device.deviceName === name)
-    )
-  }, [devices])
+      // Picker: el usuario elige el dispositivo
+      const dev = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [SERVICE_UUID],
+      });
+
+      const entry = {
+        id: dev.id,
+        name: dev.name || "Dispositivo",
+        deviceName: dev.name,
+        gatt: dev.gatt,
+        __native: dev,
+      };
+      setDevices([entry]);
+
+      log("📡 Dispositivo elegido:", entry.name, entry.id);
+      return entry;
+    } catch (e) {
+      // Usuario canceló o error
+      log("🛑 Escaneo cancelado/error:", e?.message || e);
+      return null;
+    } finally {
+      setIsScanning(false);
+    }
+  }
+
+  // CONECTAR
+  async function connectToDevice(devLike) {
+    // Si venimos de escaneo en curso, lo damos por terminado
+    if (isScanning) setIsScanning(false);
+
+    const native = await prepareGatt(devLike);
+    log("🔌 Conectado a", native.name || native.id);
+    return native;
+  }
+
+  // ENVIAR TEXTO/COMANDO
+  async function sendCommand(command) {
+    const str = String(command ?? "");
+    const encoder = new TextEncoder();
+    const buf = encoder.encode(str);
+    log("📤 Enviando comando:", str);
+    await writeBuffer(buf);
+    log("✅ Enviado");
+  }
+
+  // HELPERS DE ALTO NIVEL (compat con Payment)
+  async function sendTime(minutes) {
+    const m = Number(minutes);
+    if (!Number.isFinite(m) || m <= 0) throw new Error("Minutos inválidos");
+    // Ajusta el formato al que espera tu ESP32 (ej. "TIME:10")
+    await sendCommand(`TIME:${m}`);
+  }
+
+  async function sendCredits(quarters) {
+    const q = Number(quarters);
+    if (!Number.isFinite(q) || q <= 0) throw new Error("Créditos inválidos");
+    await sendCommand(`CREDITS:${q}`);
+  }
+
+  async function sendStart() {
+    await sendCommand("START");
+  }
+
+  async function sendStop() {
+    await sendCommand("STOP");
+  }
+
+  // DESCONECTAR MANUALMENTE
+  function disconnect() {
+    try {
+      if (gattRef.current?.connected) {
+        log("🔌 Desconectando…");
+        gattRef.current.disconnect();
+      }
+    } catch (_) {}
+    handleDisconnected();
+  }
+
+  // Limpieza al desmontar el componente que usa el hook
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
+    // Estado
     devices,
     connectedDevice,
     isScanning,
+    isWeb,
+
+    // Acciones
     scanForDevices,
     connectToDevice,
     sendCommand,
-    disconnectDevice,
-    findDeviceByName, // Nueva función auxiliar
-    isWeb
-  }
+    sendTime,
+    sendCredits,
+    sendStart,
+    sendStop,
+    disconnect,
+  };
 }
-
-export default useBLEEnhanced
