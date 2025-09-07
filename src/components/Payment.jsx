@@ -1,10 +1,44 @@
 // src/components/Payment.jsx
 import { useState, useRef, useEffect } from "react";
 import useBLEEnhanced from "../hooks/useBLEEnhanced";
-import { doc, collection, addDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  addDoc,
+  collection,
+  serverTimestamp,
+  onSnapshot,
+} from "firebase/firestore";
 import { db, auth, ensureSignedIn } from "../firebase";
+import {
+  debitWallet,
+  creditWallet,
+  ensureWalletDoc,
+} from "../lib/wallet";
 
-// ---------- Helpers para hacer el match tolerante ----------
+// 👇 Offline helpers
+import { saveOfflineTx } from "../offline/storage";
+import { syncOfflineTxs } from "../offline/reconciler";
+
+/* ---------- Utils ---------- */
+function fmtUSD(n) {
+  const v = Number(n ?? 0);
+  return `$${v.toFixed(2)}`;
+}
+function safeMsg(e) {
+  if (!e) return "Error desconocido";
+  if (typeof e === "string") return e;
+  if (e?.message) return e.message;
+  if (e?.code) return String(e.code);
+  try {
+    return JSON.stringify(e);
+  } catch {
+    return String(e);
+  }
+}
+
+/* ---------- Matching BLE ---------- */
 function normalizeName(s = "") {
   return String(s).toLowerCase().replace(/[\s_-]+/g, "");
 }
@@ -13,20 +47,18 @@ function extractNumber(s = "") {
   return m ? m[1] : null;
 }
 function matchDevice(machineId, devices) {
-  const t = normalizeName(machineId);        // ej: "lavadora01"
-  const tNum = extractNumber(machineId);     // ej: "01" o "1"
+  const t = normalizeName(machineId);
+  const tNum = extractNumber(machineId);
 
-  // 1) match directo/inclusión
-  let found = devices.find(d => {
+  let found = devices.find((d) => {
     const name = d.name || d.localName || d.deviceName || d.id || "";
-    const n = normalizeName(name);           // ej: "kashlessmachine01"
+    const n = normalizeName(name);
     return n === t || n.includes(t) || t.includes(n);
   });
   if (found) return found;
 
-  // 2) match por número (lavadora 01 ↔ Kashless_Machine_01)
   if (tNum) {
-    found = devices.find(d => {
+    found = devices.find((d) => {
       const name = d.name || d.localName || d.deviceName || d.id || "";
       const nNum = extractNumber(name);
       return nNum && nNum === tNum;
@@ -35,11 +67,7 @@ function matchDevice(machineId, devices) {
   return found || null;
 }
 
-// ---------- Helpers de seguridad para callbacks ----------
-const isFn = (f) => typeof f === "function";
-const safeCall = (fn, ...args) => (isFn(fn) ? fn(...args) : undefined);
-
-// ---------- Estilos (más contraste) ----------
+/* ---------- Estilos ---------- */
 const styles = {
   pageBg: {
     background:
@@ -71,7 +99,6 @@ const styles = {
   },
   label: { margin: 0, color: "#475569" },
   strong: { color: "#0f172a" },
-
   simulationWarning: {
     color: "#b45309",
     fontWeight: "700",
@@ -81,7 +108,6 @@ const styles = {
     borderRadius: "12px",
     margin: "10px 0 0",
   },
-
   activateBtn: {
     background: "linear-gradient(90deg, #16a34a, #22c55e)",
     color: "#ffffff",
@@ -95,11 +121,7 @@ const styles = {
     boxShadow: "0 8px 24px rgba(34,197,94,.35)",
     transition: "transform .18s ease, box-shadow .18s ease, opacity .2s ease",
   },
-  activateBtnDisabled: {
-    opacity: 0.7,
-    cursor: "not-allowed",
-  },
-
+  activateBtnDisabled: { opacity: 0.7, cursor: "not-allowed" },
   scanningStatus: {
     marginTop: "8px",
     padding: "16px",
@@ -115,7 +137,6 @@ const styles = {
     border: "1px solid #e2e8f0",
     color: "#0f172a",
   },
-
   errorMessage: {
     color: "#991b1b",
     background: "#fee2e2",
@@ -136,10 +157,44 @@ const styles = {
   },
 };
 
+/* ---------- Helpers de saldo ---------- */
+function parseBalanceCents(data) {
+  if (!data || typeof data !== "object") return 0;
+  if (typeof data.balanceCents === "number") return data.balanceCents;
+  if (typeof data.balance === "number") return Math.round(data.balance * 100);
+  if (typeof data.saldo === "number") return Math.round(data.saldo * 100);
+  if (data.wallet && typeof data.wallet.balanceCents === "number")
+    return data.wallet.balanceCents;
+  return 0;
+}
+
+async function migrateUserBalanceIfNeeded(uid) {
+  const ref = doc(db, "users", uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return;
+  const d = snap.data();
+  if (typeof d?.balanceCents === "number") return;
+
+  let cents = undefined;
+  if (typeof d?.balance === "number") cents = Math.round(d.balance * 100);
+  else if (typeof d?.saldo === "number") cents = Math.round(d.saldo * 100);
+  else if (d?.wallet && typeof d.wallet.balanceCents === "number")
+    cents = d.wallet.balanceCents;
+
+  if (typeof cents === "number") {
+    await setDoc(
+      ref,
+      { balanceCents: cents, updatedAt: serverTimestamp() },
+      { merge: true }
+    );
+  }
+}
+
 const Payment = ({ amount, machineId, userId, onSuccess, onError }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [balanceCents, setBalanceCents] = useState(null);
 
   const {
     devices,
@@ -151,138 +206,190 @@ const Payment = ({ amount, machineId, userId, onSuccess, onError }) => {
     isWeb,
   } = useBLEEnhanced();
 
-  // Mantener siempre la versión más nueva de `devices`
   const devicesRef = useRef(devices);
-  useEffect(() => { devicesRef.current = devices; }, [devices]);
+  useEffect(() => {
+    devicesRef.current = devices;
+  }, [devices]);
+
+  // 👇 Sincronizar offline al iniciar y al volver internet
+  useEffect(() => {
+    window.addEventListener("online", syncOfflineTxs);
+    syncOfflineTxs();
+    return () => window.removeEventListener("online", syncOfflineTxs);
+  }, []);
+
+  // Lee saldo en vivo
+  useEffect(() => {
+    let unsub = null;
+    (async () => {
+      try {
+        await ensureSignedIn();
+        const uid0 = auth.currentUser?.uid || userId;
+        if (!uid0) return;
+
+        await ensureWalletDoc(uid0);
+        await migrateUserBalanceIfNeeded(uid0);
+
+        const ref = doc(db, "users", uid0);
+        unsub = onSnapshot(
+          ref,
+          (snap) => {
+            const cents = parseBalanceCents(snap.data());
+            setBalanceCents(cents);
+          },
+          (err) => {
+            console.warn("[Payment] Snapshot saldo error:", err);
+          }
+        );
+      } catch (e) {
+        console.warn("[Payment] No se pudo inicializar saldo:", e);
+      }
+    })();
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, [userId]);
 
   const handlePaymentAndActivation = async () => {
     setIsProcessing(true);
     setError(null);
     setSuccess(null);
 
+    const costCents = Math.round(Number(amount) * 100);
+    const minutes = Math.floor(Number(amount) * 5);
+
+    let uid;
+    let debited = false;
+
     try {
-      console.log("💳 Iniciando proceso de pago y activación...");
-
-      // 1) Garantiza sesión y toma UID
       await ensureSignedIn();
-      const uid = auth.currentUser?.uid || userId;
-      if (!uid) throw new Error("Usuario no autenticado. Por favor, inicia sesión nuevamente.");
+      uid = auth.currentUser?.uid || userId;
+      if (!uid) throw new Error("Usuario no autenticado. Inicia sesión.");
 
-      // 2) BLE: busca y conecta (si no hay conexión)
+      await ensureWalletDoc(uid);
+      await migrateUserBalanceIfNeeded(uid);
+
+      if (typeof balanceCents === "number" && balanceCents < costCents) {
+        throw new Error(
+          `Saldo insuficiente. Saldo: ${fmtUSD(
+            balanceCents / 100
+          )} · Requiere: ${fmtUSD(costCents / 100)}`
+        );
+      }
+
+      const debitRes = await debitWallet(uid, costCents, {
+        reason: "vend",
+        machineId,
+        amountUSD: Number(amount),
+      });
+      debited = true;
+
+      if (typeof debitRes?.newBalanceCents === "number") {
+        setBalanceCents(debitRes.newBalanceCents);
+      }
+
+      // BLE
       let device = connectedDevice;
-
       if (!device) {
-        if (!navigator.bluetooth) {
-          throw new Error("Este dispositivo/navegador no soporta Web Bluetooth.");
-        }
-
-        console.log("🔍 Buscando dispositivos BLE...");
         await scanForDevices();
-
-        // Espera a que el hook pueble 'devices' (evita condiciones de carrera)
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-        for (let i = 0; i < 15; i++) { // ~4.5s máx
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+        for (let i = 0; i < 15; i++) {
           if (!isScanning && devicesRef.current.length > 0) break;
-          // eslint-disable-next-line no-await-in-loop
           await sleep(300);
         }
-        // eslint-disable-next-line no-await-in-loop
         await sleep(200);
 
-        const localDevices = devicesRef.current;
-        console.log("📡 Dispositivos detectados:", localDevices);
-
+        let localDevices = devicesRef.current;
         let targetDevice = matchDevice(machineId, localDevices);
-
-        // Fallback: abre selector nativo más compatible (acceptAllDevices)
         if (!targetDevice) {
-          try {
-            console.log("🧭 Abriendo selector nativo Web Bluetooth (acceptAllDevices)...");
-            const chosen = await navigator.bluetooth.requestDevice({
-              acceptAllDevices: true,
-              optionalServices: ["4fafc201-1fb5-459e-8fcc-c5c9c331914b"], // tu servicio GATT
-            });
-
-            targetDevice = {
-              id: chosen.id,
-              name: chosen.name,
-              deviceName: chosen.name,
-              gatt: chosen.gatt,
-              __chosen: true,
-            };
-          } catch (e) {
-            const available = localDevices.map(d => d.name || d.localName || d.deviceName || d.id).join(", ");
-            throw new Error(`Máquina "${machineId}" no encontrada. Dispositivos disponibles: ${available || "ninguno"}`);
-          }
+          const chosen = await navigator.bluetooth.requestDevice({
+            acceptAllDevices: true,
+            optionalServices: ["4fafc201-1fb5-459e-8fcc-c5c9c331914b"],
+          });
+          targetDevice = {
+            id: chosen.id,
+            name: chosen.name,
+            deviceName: chosen.name,
+            gatt: chosen.gatt,
+            __chosen: true,
+          };
         }
-
-        console.log("🎯 Dispositivo elegido:", targetDevice.name || targetDevice.localName || targetDevice.deviceName || targetDevice.id);
         device = await connectToDevice(targetDevice);
       }
 
-      // 3) Cálculo de tiempo (1 € = 5 min) — ajusta si tu lógica es distinta
-      const minutes = Math.floor(Number(amount) * 5);
-      if (!Number.isFinite(minutes) || minutes <= 0) {
-        throw new Error("Monto inválido para calcular minutos.");
-      }
-      console.log(`⏰ Tiempo calculado: ${minutes} minutos por €${amount}`);
-
-      // 4) Validaciones previas a activar
-      if (typeof sendCommand !== "function") {
-        throw new Error("Driver BLE no disponible: sendCommand no es función.");
-      }
-
-      // 5) Enviar comando a la máquina (formato que espera tu ESP32)
-      console.log("📤 Enviando comando TIME...");
       await sendCommand(`TIME:${minutes}`);
 
-      // 6) Persistencia en Firestore (tolerante)
-      try {
-        const now = new Date();
-        const end = new Date(now.getTime() + minutes * 60000);
+      // 👇 Preparar transacción
+      const txData = {
+        userId: uid,
+        machineId,
+        amount: Number(amount),
+        amountCents: costCents,
+        currency: "USD",
+        minutes,
+        startTime: new Date(),
+        endTime: new Date(Date.now() + minutes * 60000),
+        status: "active",
+        paidWithWalletCents: costCents,
+        simulated: isWeb,
+      };
 
-        const txRef = await addDoc(collection(db, "transactions"), {
-          userId: uid,
-          machineId,
-          amount,
-          minutes,
-          startTime: now,
-          endTime: end,
-          status: "active",
-          simulated: !!navigator.bluetooth, // solo indicador de entorno
-        });
+      // 👇 Guardar online u offline
+      try {
+        if (navigator.onLine) {
+          await addDoc(collection(db, "transactions"), {
+            ...txData,
+            startTime: serverTimestamp(),
+          });
+        } else {
+          saveOfflineTx(txData);
+          console.warn("Transacción guardada offline");
+        }
 
         await setDoc(
           doc(db, "machines", machineId),
           {
             status: "in-use",
             currentUser: uid,
-            endTime: end,
-            lastTransaction: txRef.id,
-            updatedAt: now,
+            endTime: txData.endTime,
+            lastTransaction: "pending-offline",
+            updatedAt: serverTimestamp(),
           },
           { merge: true }
         );
-
-        console.log("💾 Transacción guardada en Firestore", txRef.id);
-      } catch (firestoreError) {
-        console.warn("⚠️ Error guardando en Firestore (no crítico para la activación):", firestoreError);
+      } catch (e) {
+        console.warn("[Payment] Guardado Firestore NO crítico:", e);
+        saveOfflineTx(txData);
       }
 
-      // 7) Éxito
-      const result = {
-        minutes,
-        endTime: new Date(Date.now() + minutes * 60000),
-        simulated: !!navigator.bluetooth,
-      };
       setSuccess(`¡Máquina activada por ${minutes} minutos!`);
-      safeCall(onSuccess, result); // ✅ no rompe si onSuccess no es función
-      console.log("✅ Activación completada exitosamente");
+      onSuccess?.({
+        minutes,
+        endTime: txData.endTime,
+        simulated: isWeb,
+        debitedCents: costCents,
+        newBalanceCents:
+          typeof debitRes?.newBalanceCents === "number"
+            ? debitRes.newBalanceCents
+            : undefined,
+      });
     } catch (err) {
-      console.error("❌ Error en activación:", err);
-      const msg = err?.message || String(err);
+      const msg = safeMsg(err);
       setError(msg);
-      safeCall(onError, msg); // ✅ no rompe si onError no es función
+      onError?.(msg);
+
+      if (debited && uid) {
+        try {
+          const refunded = await creditWallet(uid, costCents, {
+            reason: "refund_failed_vend",
+            machineId,
+            amountUSD: Number(amount),
+          });
+          if (typeof refunded === "number") setBalanceCents(refunded);
+        } catch (reErr) {
+          console.error("Error al reembolsar:", reErr);
+        }
+      }
     } finally {
       setIsProcessing(false);
     }
@@ -297,9 +404,25 @@ const Payment = ({ amount, machineId, userId, onSuccess, onError }) => {
         </div>
 
         <div style={styles.card}>
-          <p style={styles.label}><strong style={styles.strong}>Monto:</strong> €{amount}</p>
-          <p style={styles.label}><strong style={styles.strong}>Tiempo:</strong> {Math.floor(Number(amount) * 5)} minutos</p>
-          {navigator.bluetooth && <p style={styles.simulationWarning}>⚠️ Modo Web Bluetooth activo</p>}
+          <p style={styles.label}>
+            <strong style={styles.strong}>Monto:</strong>{" "}
+            {fmtUSD(Number(amount))}
+          </p>
+          <p style={styles.label}>
+            <strong style={styles.strong}>Tiempo:</strong>{" "}
+            {Math.floor(Number(amount) * 5)} minutos
+          </p>
+          {typeof balanceCents === "number" && (
+            <p style={styles.label}>
+              <strong style={styles.strong}>Saldo:</strong>{" "}
+              {fmtUSD(balanceCents / 100)}
+            </p>
+          )}
+          {isWeb && (
+            <p style={styles.simulationWarning}>
+              ⚠️ Modo simulación (Web Bluetooth)
+            </p>
+          )}
         </div>
 
         {error && (
@@ -332,14 +455,21 @@ const Payment = ({ amount, machineId, userId, onSuccess, onError }) => {
 
         {isScanning && (
           <div style={{ ...styles.card, ...styles.scanningStatus }}>
-            <h3 style={{ ...styles.title, marginBottom: 8 }}>Escaneando dispositivos BLE…</h3>
+            <h3 style={{ ...styles.title, marginBottom: 8 }}>
+              Escaneando dispositivos BLE…
+            </h3>
             {devicesRef.current.length === 0 ? (
               <p style={styles.label}>Buscando dispositivos Kashless…</p>
             ) : (
               <div style={styles.devicesList}>
                 {devicesRef.current.map((d) => (
                   <div key={d.id} style={styles.deviceItem}>
-                    <strong>{d.name || d.localName || d.deviceName || "Dispositivo sin nombre"}</strong>
+                    <strong>
+                      {d.name ||
+                        d.localName ||
+                        d.deviceName ||
+                        "Dispositivo sin nombre"}
+                    </strong>
                     <br />
                     <small style={{ color: "#475569" }}>ID: {d.id}</small>
                   </div>

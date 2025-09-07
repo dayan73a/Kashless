@@ -1,9 +1,109 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Solo usuarios autenticados pueden leer/escribir
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+
+    // ─────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // ¿El documento pertenece al usuario autenticado?
+    // Soporta alias: user_id | userId | usuario
+    function isOwnerUserField(data) {
+      return (data.user_id == request.auth.uid) ||
+             (data.userId == request.auth.uid) ||
+             (data.usuario == request.auth.uid);
+    }
+
+    // Devuelve el business_id soportando alias: business_id | negocio_id
+    function getBusinessId(data) {
+      return (data.business_id is string)
+        ? data.business_id
+        : ((data.negocio_id is string) ? data.negocio_id : "");
+    }
+
+    // ¿El uid autenticado es el dueño del negocio?
+    // NOTA: campo con ñ → hay que usar corchetes
+    function isBusinessOwner(businessId) {
+      let biz = get(/databases/$(database)/documents/businesses/$(businessId));
+      return biz.exists() && (biz.data["dueño_id"] == request.auth.uid);
+    }
+
+    // ¿Se intenta cambiar un campo sensible? (solo en UPDATE)
+    function isChanging(fieldPath) {
+      return (fieldPath in resource.data)
+        && (request.resource.data[fieldPath] != resource.data[fieldPath]);
+    }
+
+    // Bloquea modificaciones de campos sensibles en UPDATE
+    function blocksSensitiveChanges() {
+      return !(
+        isChanging("amount_cents") ||
+        isChanging("fee_cents") ||
+        isChanging("status")
+      );
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // users/{uid}
+    // ─────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      allow get: if isSignedIn() && (request.auth.uid == uid);
+      allow list: if false;
+
+      allow create, update: if isSignedIn() && (request.auth.uid == uid);
+      allow delete: if isSignedIn() && (request.auth.uid == uid);
+
+      match /wallet_ledger/{entryId} {
+        allow read, create, update, delete: if isSignedIn() && (request.auth.uid == uid);
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // businesses/{businessId}
+    // ─────────────────────────────────────────────────────────────
+    match /businesses/{businessId} {
+      allow get: if isSignedIn() && isBusinessOwner(businessId);
+      allow list: if false;
+
+      allow create, update, delete: if isSignedIn() && isBusinessOwner(businessId);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // transactions/{txId}
+    // ─────────────────────────────────────────────────────────────
+    match /transactions/{txId} {
+      allow get: if isSignedIn() && (
+        isOwnerUserField(resource.data) ||
+        (getBusinessId(resource.data) != "" && isBusinessOwner(getBusinessId(resource.data)))
+      );
+      allow list: if false;
+
+      allow create: if isSignedIn() && isOwnerUserField(request.resource.data);
+
+      allow update, delete: if isSignedIn() && (
+        isOwnerUserField(resource.data) ||
+        (getBusinessId(resource.data) != "" && isBusinessOwner(getBusinessId(resource.data)))
+      ) && blocksSensitiveChanges();
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // app_config/{docId}
+    // ─────────────────────────────────────────────────────────────
+    match /app_config/{docId} {
+      allow get: if isSignedIn();   // cualquier usuario autenticado puede leer
+      allow list: if false;
+      allow create, update, delete: if false; // solo backend/console
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // Fallback
+    // ─────────────────────────────────────────────────────────────
+    match /{doc=**} {
+      allow read, write: if false;
     }
   }
 }

@@ -1,363 +1,187 @@
 // src/components/QrScanner.jsx
-import { useState, useEffect, useRef } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { useEffect, useRef, useState } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 import Payment from "./Payment";
+import { useI18n } from "../context/I18nContext.jsx";
 
-const QrScanner = ({ user, onClose }) => {
-  const [scanResult, setScanResult] = useState(null);
-  const [selectedMachine, setSelectedMachine] = useState(null);
-  const [isScanning, setIsScanning] = useState(true);
+// Helpers
+const fmtUSD = (n) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+
+function parseMachine(code) {
+  const id = String(code).trim();
+  const low = id.toLowerCase();
+
+  let price = 2.0;
+  let name = id;
+  let type = "machine";
+
+  if (low.includes("lavadora")) {
+    type = "washer";
+    name = `Lavadora ${id.split("_").pop() || ""}`.trim();
+    price = 2.25;
+  } else if (low.includes("secadora")) {
+    type = "dryer";
+    name = `Secadora ${id.split("_").pop() || ""}`.trim();
+    price = 1.50;
+  } else if (low.includes("kashless")) {
+    type = "washing_machine";
+    name = id;
+    price = 2.00;
+  }
+
+  return { id, name, type, price };
+}
+
+const containerStyle = {
+  padding: "20px",
+  textAlign: "center",
+  backgroundColor: "#f5f5f5",
+  fontFamily: "Arial, sans-serif",
+  position: "fixed",
+  inset: 0,
+  zIndex: 1000,
+  overflow: "auto",
+};
+
+export default function QrScanner({ user, onClose }) {
+  const { t } = useI18n();
   const [error, setError] = useState(null);
-  const [manualCode, setManualCode] = useState("");
-  const scannerRef = useRef(null);
+  const [selectedMachine, setSelectedMachine] = useState(null);
+  const [starting, setStarting] = useState(true);
+
+  const html5Ref = useRef(null);
+  const divIdRef = useRef(`qr-reader-port-${Math.random().toString(36).slice(2)}`);
+  const stoppedRef = useRef(false);
 
   useEffect(() => {
-    // Inicializa el escáner SOLO cuando estamos escaneando y no existe uno activo
-    if (isScanning && !scannerRef.current) {
-      const scanner = new Html5QrcodeScanner("qr-reader", {
-        qrbox: { width: 250, height: 250 },
-        fps: 5,
-      });
+    let mounted = true;
 
-      scannerRef.current = scanner;
-
-      scanner.render(
-        (result) => {
-          console.log("✅ QR escaneado:", result);
-          processScannedCode(result);
-        },
-        (err) => {
-          // Errores de no-detección son normales; solo logueamos si es algo distinto
-          const msg = String(err || "");
-          if (!msg.includes("NotFoundException")) {
-            console.warn("Advertencia de escáner:", msg);
-          }
-        }
-      );
-    }
-
-    // Limpieza al desmontar o cuando cambie isScanning (se re-ejecuta el efecto)
-    return () => {
-      if (scannerRef.current) {
-        // clear() detiene cámara y quita el UI del scanner
-        scannerRef.current
-          .clear()
-          .catch((err) => console.warn("⚠️ Error limpiando scanner:", err));
-        scannerRef.current = null;
-      }
-    };
-  }, [isScanning]);
-
-  const processScannedCode = (code) => {
-    try {
-      // Detenemos escaneo tras un resultado
-      setIsScanning(false);
-
-      let machineData;
-      const codeLower = String(code).toLowerCase();
-
-      if (codeLower.includes("kashless")) {
-        // Formato nuevo “Kashless_*”
-        machineData = {
-          id: code,
-          type: "washing_machine",
-          price: 5.0, // valor por defecto para Kashless
-          name: code,
-        };
-      } else if (codeLower.includes("lavadora")) {
-        machineData = {
-          id: code,
-          type: "washer",
-          price: 2.0,
-          name: `Lavadora ${code.split("_").pop() || "1"}`,
-        };
-      } else if (codeLower.includes("secadora")) {
-        machineData = {
-          id: code,
-          type: "dryer",
-          price: 1.5,
-          name: `Secadora ${code.split("_").pop() || "1"}`,
-        };
-      } else {
-        // Genérico
-        machineData = {
-          id: code,
-          type: "machine",
-          price: 2.0,
-          name: `Máquina ${code}`,
-        };
-      }
-
-      setScanResult(machineData);
-      setError(null);
-    } catch (e) {
-      console.error("Error procesando código:", e);
-      setError("⚠️ Código no válido");
-      setTimeout(() => {
+    async function start() {
+      try {
         setError(null);
-        setIsScanning(true); // reactivar escaneo
-      }, 3000);
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error(t('camera.error.noaccess'));
+        }
+
+        html5Ref.current = new Html5Qrcode(divIdRef.current, { verbose: false });
+
+        // 1) facingMode exact
+        try { await startWithConfig({ facingMode: { exact: "environment" } }); return; } catch(_){}
+        // 2) facingMode ideal
+        try { await startWithConfig({ facingMode: "environment" }); return; } catch(_){}
+        // 3) enumerar y elegir trasera
+        const cameras = await Html5Qrcode.getCameras();
+        if (!mounted) return;
+        const backCam =
+          cameras.find((c) => /back|rear|environment/i.test(c.label)) ||
+          cameras[cameras.length - 1];
+        if (!backCam) throw new Error("No camera found.");
+        await startWithConfig({ deviceId: { exact: backCam.id } });
+      } catch (e) {
+        console.error(e);
+        setError(e?.message || String(e));
+      } finally {
+        setStarting(false);
+      }
     }
-  };
 
-  const handleManualSubmit = (e) => {
-    e.preventDefault();
-    if (manualCode.trim()) {
-      processScannedCode(manualCode.trim());
+    const startWithConfig = async (cameraConfig) => {
+      const scanConfig = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
+      await html5Ref.current.start(
+        cameraConfig,
+        scanConfig,
+        (decodedText) => {
+          if (stoppedRef.current) return;
+          stoppedRef.current = true;
+          stop().finally(() => {
+            const machine = parseMachine(decodedText);
+            setSelectedMachine(machine);
+          });
+        },
+        () => {}
+      );
+    };
+
+    async function stop() {
+      try { await html5Ref.current?.stop(); } catch {}
+      try { await html5Ref.current?.clear(); } catch {}
     }
-  };
 
-  const handlePaymentSuccess = (result) => {
-    alert(`✅ ${selectedMachine.name} activada! ${result.minutes} minutos de uso`);
-    onClose?.();
-  };
+    start();
+    return () => { mounted = false; stop(); };
+  }, [t]);
 
-  const handlePaymentError = (err) => {
-    alert(`❌ Error: ${err}`);
-    // dejamos que el usuario decida reintentar
-  };
-
-  const handleRetryScan = () => {
-    setScanResult(null);
-    setSelectedMachine(null);
-    setError(null);
-    setIsScanning(true);
-  };
-
-  // Si ya elegimos máquina, mostrar el pago
   if (selectedMachine) {
     return (
       <Payment
         amount={selectedMachine.price}
         machineId={selectedMachine.id}
         userId={user?.uid}
-        onSuccess={handlePaymentSuccess}
-        onError={handlePaymentError}
+        onSuccess={() => onClose?.()}
+        onError={(err) => {
+          alert(`❌ Error: ${err}`);
+          window.location.reload();
+        }}
       />
     );
   }
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h2 style={styles.title}>Escanear código QR</h2>
-        <button onClick={onClose} style={styles.closeButton}>
-          ✕
-        </button>
+    <div style={containerStyle}>
+      <div style={{ margin: "0 auto", maxWidth: 420, background: "#fff", borderRadius: 12, padding: 16, boxShadow: "0 2px 8px rgba(0,0,0,.08)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h2 style={{ margin: 0, color: "#333" }}>{t('qr.title')}</h2>
+          <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 22, cursor: "pointer", color: "#666" }}>✕</button>
+        </div>
+
+        {error ? (
+          <div style={{ marginTop: 12, padding: 12, borderRadius: 8, background: "#ffebee", color: "#c62828" }}>
+            {error}
+          </div>
+        ) : null}
+
+        <div style={{ marginTop: 16 }}>
+          <div id={divIdRef.current} style={{ width: "100%", minHeight: 280, background: "#000", borderRadius: 12, overflow: "hidden" }} />
+          <p style={{ color: "#666", marginTop: 10 }}>
+            {starting ? t('qr.initializing') : t('qr.point')}
+          </p>
+        </div>
+
+        <ManualCodeFallback
+          t={t}
+          onSubmitCode={(code) => {
+            const machine = parseMachine(code);
+            setSelectedMachine(machine);
+          }}
+        />
       </div>
-
-      {error && (
-        <div style={styles.error}>
-          <span>{error}</span>
-          <button onClick={() => setError(null)} style={styles.closeError}>
-            ✕
-          </button>
-        </div>
-      )}
-
-      {isScanning ? (
-        <>
-          <div style={styles.scannerContainer}>
-            <div id="qr-reader"></div>
-            <p style={styles.scannerText}>Enfoca el código QR de la máquina</p>
-          </div>
-
-          <div style={styles.manualSection}>
-            <h3 style={styles.sectionTitle}>O ingresa el código manualmente</h3>
-            <form onSubmit={handleManualSubmit} style={styles.form}>
-              <input
-                type="text"
-                placeholder="Ej: Kashless_Machine_01, lavadora_01"
-                value={manualCode}
-                onChange={(e) => setManualCode(e.target.value)}
-                style={styles.input}
-              />
-              <button type="submit" style={styles.manualButton}>
-                ✅ Activar máquina
-              </button>
-            </form>
-          </div>
-        </>
-      ) : scanResult ? (
-        <div style={styles.scanResult}>
-          <h3 style={styles.sectionTitle}>Máquina detectada:</h3>
-          <p>
-            <strong>Nombre:</strong> {scanResult.name}
-          </p>
-          <p>
-            <strong>Tipo:</strong> {scanResult.type}
-          </p>
-          <p>
-            <strong>Precio:</strong> €{scanResult.price}
-          </p>
-
-          <div style={styles.scanActions}>
-            <button
-              onClick={() => setSelectedMachine(scanResult)}
-              style={styles.confirmButton}
-            >
-              ✅ Activar esta máquina
-            </button>
-            <button onClick={handleRetryScan} style={styles.retryButton}>
-              🔄 Escanear otro código
-            </button>
-          </div>
-        </div>
-      ) : null}
     </div>
   );
-};
+}
 
-const styles = {
-  container: {
-    padding: "20px",
-    textAlign: "center",
-    backgroundColor: "#f5f5f5",
-    fontFamily: "Arial, sans-serif",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 1000,
-    overflow: "auto",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "20px",
-    padding: "15px 20px",
-    backgroundColor: "white",
-    borderRadius: "10px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-  },
-  title: {
-    margin: 0,
-    color: "#333",
-    fontSize: "1.5rem",
-  },
-  closeButton: {
-    background: "none",
-    border: "none",
-    fontSize: "24px",
-    cursor: "pointer",
-    padding: "5px",
-    color: "#666",
-    borderRadius: "50%",
-    width: "40px",
-    height: "40px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  error: {
-    backgroundColor: "#ffebee",
-    color: "#d32f2f",
-    padding: "15px",
-    borderRadius: "8px",
-    margin: "20px auto",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    maxWidth: "400px",
-  },
-  closeError: {
-    background: "none",
-    border: "none",
-    color: "#d32f2f",
-    fontSize: "18px",
-    cursor: "pointer",
-    padding: 0,
-    width: "24px",
-    height: "24px",
-  },
-  scannerContainer: {
-    margin: "20px auto",
-    maxWidth: "400px",
-    textAlign: "center",
-    padding: "15px",
-    backgroundColor: "white",
-    borderRadius: "10px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-  },
-  scannerText: {
-    margin: "10px 0",
-    color: "#666",
-    fontSize: "0.9rem",
-  },
-  manualSection: {
-    backgroundColor: "white",
-    padding: "25px",
-    borderRadius: "15px",
-    margin: "20px auto",
-    maxWidth: "400px",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-  },
-  sectionTitle: {
-    color: "#333",
-    marginBottom: "20px",
-    fontSize: "1.2rem",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  input: {
-    padding: "15px",
-    border: "2px solid #ddd",
-    borderRadius: "8px",
-    fontSize: "16px",
-    textAlign: "center",
-  },
-  manualButton: {
-    padding: "15px",
-    backgroundColor: "#4caf50",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "16px",
-    fontWeight: "bold",
-    transition: "background-color 0.2s",
-  },
-  scanResult: {
-    backgroundColor: "white",
-    padding: "30px",
-    borderRadius: "15px",
-    margin: "40px auto",
-    maxWidth: "400px",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-  },
-  scanActions: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginTop: "20px",
-  },
-  confirmButton: {
-    padding: "15px",
-    backgroundColor: "#4caf50",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    fontSize: "16px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    transition: "background-color 0.2s",
-  },
-  retryButton: {
-    padding: "12px",
-    backgroundColor: "#666",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    fontSize: "14px",
-    cursor: "pointer",
-    transition: "background-color 0.2s",
-  },
-};
-
-export default QrScanner;
-
+function ManualCodeFallback({ onSubmitCode, t }) {
+  const [v, setV] = useState("");
+  return (
+    <div style={{ marginTop: 16, background: "#f8f8f8", padding: 12, borderRadius: 10 }}>
+      <p style={{ margin: "4px 0 10px", color: "#333" }}>{t('qr.manual.title')}</p>
+      <div style={{ display: "flex", gap: 8 }}>
+        <input
+          value={v}
+          onChange={(e) => setV(e.target.value)}
+          placeholder={t('qr.manual.placeholder')}
+          style={{ flex: 1, padding: "12px 10px", border: "2px solid #ddd", borderRadius: 8, fontSize: 16, textAlign: "center" }}
+        />
+        <button
+          onClick={() => v && onSubmitCode(v.trim())}
+          style={{ padding: "12px 16px", background: "#4caf50", color: "#fff", border: "none", borderRadius: 8, fontWeight: 700, cursor: "pointer" }}
+        >
+          {t('qr.manual.activate')}
+        </button>
+      </div>
+      <p style={{ color: "#777", fontSize: 12, marginTop: 8 }}>
+        {t('qr.manual.note', { price: fmtUSD(2) })}
+      </p>
+    </div>
+  );
+}

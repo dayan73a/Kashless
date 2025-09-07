@@ -15,7 +15,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAvYql19kVdoDqxrXEF8GCNKjtaEYPhT8c",
   authDomain: "kashless-app.firebaseapp.com",
   projectId: "kashless-app",
-  storageBucket: "kashless-app.appspot.com", // 👈 corregido
+  storageBucket: "kashless-app.appspot.com", // 👈 ok
   messagingSenderId: "969768240544",
   appId: "1:969768240544:web:8929cb2903daa24bfa50c5",
   measurementId: "G-730BEZCRXG",
@@ -52,6 +52,9 @@ export async function getAuthToken(forceRefresh = false): Promise<string> {
   const user = auth.currentUser!;
   return user.getIdToken(forceRefresh);
 }
+
+// Arranca sesión anónima al cargar (no bloqueante)
+ensureSignedIn().catch((e) => console.error("ensureSignedIn error:", e));
 
 // Export default (para importaciones por defecto)
 export default app;

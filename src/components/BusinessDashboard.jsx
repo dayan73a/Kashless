@@ -1,513 +1,570 @@
-import { useState, useEffect } from 'react';
-import { 
-  collection, 
-  query, 
-  where, 
-  orderBy, 
+// src/components/BusinessDashboard.jsx
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { useApp } from "../context/AppContext.jsx";
+import {
+  collection,
+  collectionGroup,
+  query,
+  where,
   onSnapshot,
   doc,
   getDoc,
-  setDoc
-} from 'firebase/firestore';
-import { db } from '../firebase.js';
-import { useApp } from '../context/AppContext.jsx';
-import { useNavigate } from 'react-router-dom';
+  limit,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import BusinessStatsModal from "./BusinessStatsModal.jsx";
+import { useI18n } from "../context/I18nContext.jsx";
 
-const BusinessDashboard = () => {
-  const [view, setView] = useState('dashboard'); // 'dashboard' o 'create-business'
-  const [transactions, setTransactions] = useState([]);
+/** ---- Helpers de formato ---- */
+function useFormatters(lang) {
+  const locale = lang === "es" ? "es-ES" : "en-US";
+  const fMoney = (cents) =>
+    new Intl.NumberFormat(locale, { style: "currency", currency: "USD" }).format(
+      Number(cents || 0) / 100
+    );
+  const fDateTime = (d) =>
+    d
+      ? new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(d)
+      : "";
+  return { fMoney, fDateTime };
+}
+
+export default function BusinessDashboard() {
+  const navigate = useNavigate();
+  const { currentUser, loading: userLoading } = useApp();
+  const { t, lang } = useI18n();
+  const { fMoney, fDateTime } = useFormatters(lang);
+
+  // filtros de rango / mes
+  const [range, setRange] = useState("today"); // "today" | "week" | "month"
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [monthOptions, setMonthOptions] = useState([]);
+
+  // datos
   const [loading, setLoading] = useState(true);
   const [businessData, setBusinessData] = useState(null);
+  const [transactions, setTransactions] = useState([]);
   const [financialSummary, setFinancialSummary] = useState({
     ventasHoy: 0,
     ventasSemana: 0,
     comisionesAcumuladas: 0,
-    saldoDisponible: 0
+    saldoDisponible: 0,
   });
-  
-  const { currentUser, userLoading } = useApp();
-  const navigate = useNavigate();
+  const [showStats, setShowStats] = useState(false);
 
-  // Verificar datos del usuario
+  // businessId posible en varios campos
+  const bizId =
+    currentUser?.negocio_id ||
+    currentUser?.business_id ||
+    currentUser?.businessId ||
+    null;
+
+  /** ---- Opciones de meses (últimos 12) ---- */
   useEffect(() => {
-    console.log('🔍 DEBUG - CurrentUser:', currentUser);
-    console.log('🔍 DEBUG - Es dueño?:', currentUser?.es_dueno);
-    
-    if (currentUser && currentUser.es_dueno) {
-      // Verificar si tiene negocio_id, si no, mostrar vista de creación
-      if (!currentUser.negocio_id) {
-        console.log('🔴 Usuario es dueño pero no tiene negocio asignado.');
-        setView('create-business');
-      } else {
-        console.log('✅ Tiene negocio_id:', currentUser.negocio_id);
-        setView('dashboard');
-      }
+    const now = new Date();
+    const opts = [];
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const label = d.toLocaleDateString(lang === "es" ? "es-ES" : "en-US", {
+        month: "long",
+        year: "numeric",
+      });
+      opts.push({ key, label });
     }
-  }, [currentUser]);
+    setMonthOptions(opts);
+    if (!selectedMonth && opts.length) setSelectedMonth(opts[0].key);
+  }, [lang]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Cargar datos del negocio y transacciones
+  /** ---- Carga de negocio + transacciones (raíz + collectionGroup si hay índices) ---- */
   useEffect(() => {
-    if (!currentUser || !currentUser.negocio_id) return;
+    if (!currentUser || !bizId) return;
 
-    const loadBusinessData = async () => {
+    setLoading(true);
+    const unsubs = [];
+    let lastMergedCache = [];
+
+    (async () => {
       try {
-        console.log('📦 Cargando datos para negocio ID:', currentUser.negocio_id);
-        
-        // Cargar información del negocio
-        const businessRef = doc(db, 'businesses', currentUser.negocio_id);
-        const businessSnap = await getDoc(businessRef);
-        
-        if (businessSnap.exists()) {
-          setBusinessData(businessSnap.data());
-          console.log('✅ Negocio encontrado:', businessSnap.data());
-        } else {
-          console.log('❌ Negocio NO encontrado con ID:', currentUser.negocio_id);
-        }
+        // 1) negocio
+        const bizRef = doc(db, "businesses", bizId);
+        const bizSnap = await getDoc(bizRef);
+        const biz = bizSnap.exists() ? bizSnap.data() : null;
+        setBusinessData(biz || null);
 
-        // Consultar transacciones del negocio
-        const q = query(
-          collection(db, 'transactions'),
-          where('negocio_id', '==', currentUser.negocio_id),
-          orderBy('fecha', 'desc')
-        );
+        const ownerId = biz?.dueño_id || biz?.owner_id || currentUser.uid;
 
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          console.log('📊 Transacciones encontradas:', querySnapshot.size);
-          
-          const transactionsData = [];
+        // % por defecto si no hay fija/%
+        const commissionPctDefault = 0.03;
+
+        // 2) transacciones posibles
+        const txRoot = collection(db, "transactions");
+        const txCG = collectionGroup(db, "transactions");
+
+        const rootQueries = [
+          query(txRoot, where("business_id", "==", bizId), limit(50)),
+          query(txRoot, where("negocio_id", "==", bizId), limit(50)),
+          query(txRoot, where("userId", "==", ownerId), limit(50)),
+          query(txRoot, where("user_id", "==", ownerId), limit(50)),
+        ];
+
+        const groupQueries = [
+          query(txCG, where("business_id", "==", bizId), limit(50)),
+          query(txCG, where("negocio_id", "==", bizId), limit(50)),
+          query(txCG, where("userId", "==", ownerId), limit(50)),
+          query(txCG, where("user_id", "==", ownerId), limit(50)),
+        ];
+
+        const buckets = [[], [], [], [], [], [], [], []];
+
+        const normalize = (d) => {
+          const raw = d.data();
+          const ts =
+            (raw.created_at && raw.created_at.toDate && raw.created_at.toDate()) ||
+            (raw.fecha && raw.fecha.toDate && raw.fecha.toDate()) ||
+            (raw.startTime && raw.startTime.toDate && raw.startTime.toDate()) ||
+            null;
+
+          const type =
+            raw.type ||
+            raw.tipo ||
+            (raw.paidWithWalletCents ? "payment" : "unknown");
+
+          const amount =
+            raw.amount_cents ??
+            raw.amountCents ??
+            raw.paidWithWalletCents ??
+            (typeof raw.monto === "number" ? Math.round(raw.monto * 100) : 0);
+
+          const sign = raw.sign || (type === "payment" ? "-" : "+");
+          const signed = (sign === "-" ? -1 : 1) * Math.abs(Number(amount || 0));
+
+          return {
+            id: d.id,
+            ts,
+            type,
+            signed_cents: signed,
+            machine: raw.machine_id || raw.machineId || "-",
+            user: raw.user_id || raw.userId || "-",
+          };
+        };
+
+        const recompute = () => {
+          const haveAny = buckets.some((b) => b.length > 0);
+          if (!haveAny && lastMergedCache.length > 0) {
+            setLoading(false);
+            return;
+          }
+
+          const map = new Map();
+          buckets.flat().forEach((docSnap) => {
+            map.set(docSnap.ref.path, { id: docSnap.id, ...docSnap.data(), __path: docSnap.ref.path });
+          });
+
+          const merged = Array.from(map.values())
+            .map((raw) => normalize({ id: raw.id, data: () => raw }))
+            .sort((a, b) => (b.ts?.getTime?.() || 0) - (a.ts?.getTime?.() || 0));
+
+          lastMergedCache = merged.slice();
+          setTransactions(merged);
+
+          // KPIs
+          const now = new Date();
+          const todayStr = now.toDateString();
+          const startOfWeek = new Date(now);
+          startOfWeek.setHours(0, 0, 0, 0);
+          startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // domingo
+
           let ventasHoy = 0;
           let ventasSemana = 0;
-          let comisionesAcumuladas = 0;
-          const hoy = new Date();
-          const inicioSemana = new Date(hoy.setDate(hoy.getDate() - hoy.getDay()));
+          let countSemana = 0;
 
-          querySnapshot.forEach((doc) => {
-            const transaction = { id: doc.id, ...doc.data() };
-            transactionsData.push(transaction);
-
-            // Calcular métricas
-            if (transaction.tipo === 'pago') {
-              const transactionDate = transaction.fecha?.toDate();
-              
-              // Ventas hoy
-              if (transactionDate && transactionDate.toDateString() === new Date().toDateString()) {
-                ventasHoy += transaction.monto;
-              }
-              
-              // Ventas esta semana
-              if (transactionDate && transactionDate >= inicioSemana) {
-                ventasSemana += transaction.monto;
-              }
-              
-              // Comisiones (3%)
-              comisionesAcumuladas += transaction.monto * 0.03;
+          for (const tx of merged) {
+            if (tx.type !== "payment") continue;
+            const cents = Math.abs(tx.signed_cents);
+            if (tx.ts?.toDateString?.() === todayStr) ventasHoy += cents;
+            if (tx.ts && tx.ts >= startOfWeek) {
+              ventasSemana += cents;
+              countSemana += 1;
             }
-          });
+          }
 
-          console.log('💰 Resumen financiero:', {
-            ventasHoy,
-            ventasSemana,
-            comisionesAcumuladas,
-            saldoDisponible: ventasSemana - comisionesAcumuladas
-          });
+          const comisionFijaCents =
+            (typeof biz?.comision_fija_cents === "number" && biz.comision_fija_cents) ||
+            (typeof biz?.comision_fija === "number" && Math.round(biz.comision_fija * 100)) ||
+            null;
 
-          setTransactions(transactionsData);
+          const pct =
+            (typeof biz?.commission_pct === "number" && biz.commission_pct) ||
+            (typeof biz?.comision_pct === "number" && biz.comision_pct) ||
+            commissionPctDefault;
+
+          const comisionesAcumuladasCents =
+            countSemana > 0
+              ? comisionFijaCents != null
+                ? countSemana * comisionFijaCents
+                : Math.round(ventasSemana * pct)
+              : 0;
+
+          const saldoDisponibleCents = Math.max(0, ventasSemana - comisionesAcumuladasCents);
+
           setFinancialSummary({
             ventasHoy,
             ventasSemana,
-            comisionesAcumuladas,
-            saldoDisponible: ventasSemana - comisionesAcumuladas
+            comisionesAcumuladas: comisionesAcumuladasCents,
+            saldoDisponible: saldoDisponibleCents,
           });
+
           setLoading(false);
-        }, (error) => {
-          console.error('❌ Error en snapshot:', error);
-          setLoading(false);
+        };
+
+        // listeners raíz
+        rootQueries.forEach((qObj, i) => {
+          unsubs.push(
+            onSnapshot(
+              qObj,
+              (snap) => {
+                buckets[i] = snap.docs;
+                recompute();
+              },
+              () => {}
+            )
+          );
         });
 
-        return () => unsubscribe();
-      } catch (error) {
-        console.error('❌ Error loading business data:', error);
+        // listeners collectionGroup (si faltan índices, ignorar error)
+        groupQueries.forEach((qObj, idx) => {
+          const i = 4 + idx;
+          unsubs.push(
+            onSnapshot(
+              qObj,
+              (snap) => {
+                buckets[i] = snap.docs;
+                recompute();
+              },
+              (err) => {
+                const msg = err?.message || "";
+                if (msg.includes("requires an index")) return;
+              }
+            )
+          );
+        });
+      } catch (e) {
+        console.error("[BusinessDashboard] load error:", e);
         setLoading(false);
       }
-    };
+    })();
 
-    loadBusinessData();
-  }, [currentUser, navigate]);
+    return () => unsubs.forEach((u) => u && u());
+  }, [currentUser, bizId]); // no dependemos de t/lang para evitar re-suscripciones
 
-  // Componente para crear negocio
-  const CreateBusinessForm = () => {
-    const [businessName, setBusinessName] = useState('');
-    const [businessAddress, setBusinessAddress] = useState('');
-    const [businessType, setBusinessType] = useState('lavanderia');
-    const [isLoading, setIsLoading] = useState(false);
+  /** ---- Filtro para export según rango/mes ---- */
+  const filteredForExport = useMemo(() => {
+    if (!Array.isArray(transactions)) return [];
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfWeek = new Date(startOfToday);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfToday.getDay()); // domingo
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      if (!businessName.trim() || !businessAddress.trim()) return;
-      setIsLoading(true);
+    if (range === "today") {
+      return transactions.filter((tx) => tx.ts && tx.ts >= startOfToday);
+    }
+    if (range === "week") {
+      return transactions.filter((tx) => tx.ts && tx.ts >= startOfWeek);
+    }
+    if (range === "month" && selectedMonth) {
+      const [y, m] = selectedMonth.split("-").map((n) => parseInt(n, 10));
+      const start = new Date(y, m - 1, 1);
+      const end = new Date(y, m, 1);
+      return transactions.filter((tx) => tx.ts && tx.ts >= start && tx.ts < end);
+    }
+    return transactions;
+  }, [transactions, range, selectedMonth]);
 
-      try {
-        // 1. Crear el documento del negocio en la colección 'businesses'
-        const newBusinessRef = doc(collection(db, 'businesses'));
-        await setDoc(newBusinessRef, {
-          nombre: businessName,
-          direccion: businessAddress,
-          tipo: businessType,
-          dueño_id: currentUser.uid,
-          dueño_email: currentUser.email,
-          comision_accumulada: 0,
-          saldo_disponible: 0,
-          activo: true
-        });
+  /** ---- Exportar CSV ---- */
+  function handleExportCsv() {
+    const rows = [
+      ["id", "fecha", "tipo", "monto_cents", "maquina", "usuario"],
+      ...filteredForExport.map((tx) => [
+        tx.id || "",
+        tx.ts ? tx.ts.toISOString() : "",
+        tx.type || "",
+        tx.signed_cents ?? "",
+        tx.machine || "",
+        tx.user || "",
+      ]),
+    ];
+    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const label =
+      range === "month" && selectedMonth ? `_${selectedMonth}` :
+      range === "week" ? "_week" :
+      "_today";
+    a.download = `kashless_transactions${label}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
-        const newBusinessId = newBusinessRef.id;
-
-        // 2. Actualizar el documento del usuario con el negocio_id
-        const userDocRef = doc(db, 'users', currentUser.uid);
-        await setDoc(userDocRef, { 
-          negocio_id: newBusinessId 
-        }, { merge: true });
-
-        console.log("✅ Negocio creado y usuario actualizado con ID:", newBusinessId);
-        alert('¡Negocio creado con éxito!');
-        
-        // Forzar recarga del usuario en el contexto
-        window.location.reload();
-        
-      } catch (error) {
-        console.error("Error creando negocio:", error);
-        alert('Error al crear el negocio: ' + error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    return (
-      <div style={styles.createBusinessContainer}>
-        <div style={styles.header}>
-          <button 
-            onClick={() => navigate('/dashboard')}
-            style={styles.backButton}
-          >
-            ← Volver
-          </button>
-          <h2 style={styles.title}>Crear Tu Negocio</h2>
-        </div>
-        
-        <div style={styles.formContainer}>
-          <p style={styles.description}>Como socio, necesitas registrar tu negocio para comenzar a recibir pagos con Kashless.</p>
-          
-          <form onSubmit={handleSubmit} style={styles.form}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Nombre del Negocio</label>
-              <input
-                type="text"
-                placeholder="Ej: Lavandería Express"
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-                style={styles.input}
-                required
-              />
-            </div>
-            
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Dirección</label>
-              <input
-                type="text"
-                placeholder="Ej: Av. Principal #123"
-                value={businessAddress}
-                onChange={(e) => setBusinessAddress(e.target.value)}
-                style={styles.input}
-                required
-              />
-            </div>
-            
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Tipo de Negocio</label>
-              <select 
-                value={businessType} 
-                onChange={(e) => setBusinessType(e.target.value)}
-                style={styles.select}
-              >
-                <option value="lavanderia">Lavandería</option>
-                <option value="cafeteria">Cafetería</option>
-                <option value="restaurante">Restaurante</option>
-                <option value="tienda">Tienda</option>
-                <option value="otros">Otros</option>
-              </select>
-            </div>
-            
-            <button 
-              type="submit" 
-              disabled={isLoading}
-              style={isLoading ? styles.submitButtonDisabled : styles.submitButton}
-            >
-              {isLoading ? 'Creando...' : 'Crear Negocio'}
-            </button>
-          </form>
-        </div>
-      </div>
-    );
-  };
-
-  // Esperar a que el usuario se cargue
+  /** ---- Guardas de navegación / estados ---- */
   if (userLoading || !currentUser) {
     return (
-      <div style={styles.container}>
-        <div style={styles.loading}>Cargando usuario...</div>
+      <div style={s.container}>
+        <div style={s.loading}>{t("common.loadingUser") || "Cargando..."}</div>
       </div>
     );
   }
 
-  // Verificar si es dueño
   if (!currentUser.es_dueno) {
-    navigate('/dashboard');
+    navigate("/dashboard");
     return null;
   }
 
-  // Mostrar formulario de creación si no tiene negocio
-  if (view === 'create-business') {
-    return <CreateBusinessForm />;
-  }
-
-  // Mostrar dashboard del negocio
+  /** ---- UI ---- */
   return (
-    <div style={styles.container}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button 
-          onClick={() => navigate('/dashboard')}
-          style={styles.backButton}
-        >
-          ← Volver
+    <div style={s.container} key={lang}>
+      <div style={s.header}>
+        <button onClick={() => navigate("/dashboard")} style={s.backButton}>
+          {t("common.back")}
         </button>
-        <h2 style={styles.title}>
-          🏪 Panel de Mi Negocio
-          {businessData?.nombre && ` - ${businessData.nombre}`}
+        <h2 style={s.title}>
+          {t("biz.title")}
+          {businessData?.nombre ? ` - ${businessData.nombre}` : ""}
         </h2>
       </div>
 
-      {/* Resumen Financiero */}
-      <div style={styles.summaryGrid}>
-        <div style={styles.summaryCard}>
-          <h3>💰 Ventas Hoy</h3>
-          <p style={styles.amount}>${financialSummary.ventasHoy.toFixed(2)}</p>
+      {/* Controles: rango + mes + export + ajustes */}
+      <div style={s.controlsRow}>
+        <div style={s.rangeGroup}>
+          <button
+            onClick={() => setRange("today")}
+            style={range === "today" ? s.rangeButtonActive : s.rangeButton}
+          >
+            {t("stats.today") || "Hoy"}
+          </button>
+          <button
+            onClick={() => setRange("week")}
+            style={range === "week" ? s.rangeButtonActive : s.rangeButton}
+          >
+            {t("stats.week") || "Semana"}
+          </button>
+          <button
+            onClick={() => setRange("month")}
+            style={range === "month" ? s.rangeButtonActive : s.rangeButton}
+          >
+            {t("stats.month") || "Mes"}
+          </button>
+
+          {range === "month" && (
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              style={{ padding: "8px 10px", borderRadius: 8, border: "1px solid #dfe6e9" }}
+            >
+              {monthOptions.map((m) => (
+                <option key={m.key} value={m.key}>{m.label}</option>
+              ))}
+            </select>
+          )}
         </div>
-        <div style={styles.summaryCard}>
-          <h3>📈 Ventas Semana</h3>
-          <p style={styles.amount}>${financialSummary.ventasSemana.toFixed(2)}</p>
-        </div>
-        <div style={styles.summaryCard}>
-          <h3>🏷️ Comisiones</h3>
-          <p style={styles.amount}>${financialSummary.comisionesAcumuladas.toFixed(2)}</p>
-        </div>
-        <div style={styles.summaryCard}>
-          <h3>💳 Saldo Disponible</h3>
-          <p style={styles.amount}>${financialSummary.saldoDisponible.toFixed(2)}</p>
+
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            style={s.exportButton}
+            onClick={handleExportCsv}
+            disabled={filteredForExport.length === 0}
+            title={filteredForExport.length === 0 ? (t("biz.noTx") || "Sin datos para exportar") : ""}
+          >
+            {t("biz.exportReport") || "Exportar CSV"}
+          </button>
+
+          <button
+            style={s.secondaryButton}
+            onClick={() => navigate("/business-settings")}
+          >
+            {t("biz.settings") || "Ajustes"}
+          </button>
         </div>
       </div>
 
-      {/* Sección de Transacciones */}
-      <div style={styles.section}>
-        <h3>📋 Últimas Transacciones ({transactions.length})</h3>
+      {/* KPIs */}
+      <div style={s.summaryGrid}>
+        <div style={s.summaryCard}>
+          <h3>{t("biz.salesToday")}</h3>
+          <p style={s.amount}>{fMoney(financialSummary.ventasHoy)}</p>
+        </div>
+        <div style={s.summaryCard}>
+          <h3>{t("biz.salesWeek")}</h3>
+          <p style={s.amount}>{fMoney(financialSummary.ventasSemana)}</p>
+        </div>
+        <div style={s.summaryCard}>
+          <h3>{t("biz.fees")}</h3>
+          <p style={s.amount}>{fMoney(financialSummary.comisionesAcumuladas)}</p>
+        </div>
+        <div style={s.summaryCard}>
+          <h3>{t("biz.availableBalance")}</h3>
+          <p style={s.amount}>{fMoney(financialSummary.saldoDisponible)}</p>
+        </div>
+      </div>
+
+      {/* Últimas transacciones */}
+      <div style={s.section}>
+        <h3>
+          {t("biz.latestTx")} ({transactions.length})
+        </h3>
         {transactions.length === 0 ? (
-          <p style={styles.empty}>No hay transacciones registradas</p>
+          <p style={s.empty}>{t("biz.noTx")}</p>
         ) : (
-          <div style={styles.transactionsList}>
-            {transactions.slice(0, 10).map((transaction) => (
-              <div key={transaction.id} style={styles.transactionCard}>
-                <div style={styles.transactionHeader}>
-                  <span>{transaction.fecha?.toDate().toLocaleDateString()}</span>
-                  <span style={styles.amount}>
-                    ${transaction.monto.toFixed(2)}
+          <div style={s.transactionsList}>
+            {transactions.slice(0, 10).map((tx) => (
+              <div key={tx.id + "_" + (tx.ts?.getTime?.() || "")} style={s.transactionCard}>
+                <div style={s.transactionHeader}>
+                  <span>{fDateTime(tx.ts)}</span>
+                  <span style={s.amountSmall}>
+                    {tx.signed_cents < 0 ? "-" : "+"}
+                    {fMoney(Math.abs(tx.signed_cents))}
                   </span>
                 </div>
-                <p>{transaction.detalle}</p>
+                <div>{t("tx.type")}: {tx.type}</div>
+                <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {t("tx.machine")}: {tx.machine}
+                </div>
+                <div style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {t("tx.user")}: {tx.user}
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* Botones de Acción */}
-      <div style={styles.buttonGroup}>
-        <button style={styles.primaryButton}>
-          📊 Ver Estadísticas Completas
-        </button>
-        <button style={styles.secondaryButton}>
-          📤 Exportar Reporte
+      {/* Botón para abrir modal de estadísticas */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
+        <button style={s.primaryButton} onClick={() => setShowStats(true)}>
+          {t("biz.viewFullStats")}
         </button>
       </div>
+
+      {/* Modal de estadísticas (montaje seguro) */}
+      {showStats && (
+        <BusinessStatsModal
+          open={showStats}
+          onClose={() => setShowStats(false)}
+          transactions={transactions}
+          business={businessData}
+        />
+      )}
     </div>
   );
-};
+}
 
-const styles = {
+/** ---- Estilos ---- */
+const s = {
   container: {
-    padding: '20px',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5'
-  },
-  createBusinessContainer: {
-    padding: '20px',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5'
+    padding: "20px",
+    minHeight: "100vh",
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '15px',
-    marginBottom: '30px'
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    marginBottom: "20px",
   },
   backButton: {
-    padding: '10px 15px',
-    backgroundColor: '#95a5a6',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer'
+    padding: "10px 15px",
+    background: "#95a5a6",
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    cursor: "pointer",
   },
-  title: {
-    color: '#2c3e50',
-    margin: 0
+  title: { margin: 0, color: "#2c3e50" },
+
+  controlsRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 16,
+    flexWrap: "wrap",
   },
-  loading: {
-    textAlign: 'center',
-    padding: '50px',
-    fontSize: '18px',
-    color: '#7f8c8d'
+  rangeGroup: { display: "flex", gap: 8, alignItems: "center" },
+  rangeButton: {
+    padding: "8px 12px",
+    background: "#ecf0f1",
+    color: "#2c3e50",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
   },
+  rangeButtonActive: {
+    padding: "8px 12px",
+    background: "#3498db",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
+  },
+  exportButton: {
+    padding: "10px 16px",
+    background: "#8e44ad",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
+  },
+
   summaryGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    gap: '15px',
-    marginBottom: '30px'
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
+    gap: 12,
+    marginBottom: 20,
   },
   summaryCard: {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '10px',
-    textAlign: 'center',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    background: "#fff",
+    padding: 16,
+    textAlign: "center",
+    borderRadius: 10,
+    boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
   },
-  amount: {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    color: '#27ae60',
-    margin: '10px 0 0 0'
-  },
+  amount: { fontSize: 22, fontWeight: "bold", color: "#27ae60", margin: 0 },
+  amountSmall: { fontWeight: "bold", color: "#27ae60" },
+
   section: {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '10px',
-    marginBottom: '20px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    background: "#fff",
+    padding: 16,
+    borderRadius: 10,
+    boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
   },
-  empty: {
-    textAlign: 'center',
-    color: '#7f8c8d',
-    fontStyle: 'italic'
-  },
+  empty: { color: "#7f8c8d", fontStyle: "italic" },
   transactionsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px'
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    maxHeight: 384,
+    overflowY: "auto",
   },
-  transactionCard: {
-    padding: '15px',
-    border: '1px solid #ecf0f1',
-    borderRadius: '8px',
-    backgroundColor: '#fafafa'
-  },
-  transactionHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '5px'
-  },
-  buttonGroup: {
-    display: 'flex',
-    gap: '15px',
-    justifyContent: 'center'
-  },
+  transactionCard: { padding: 12, border: "1px solid #eee", borderRadius: 8, background: "#fafafa" },
+  transactionHeader: { display: "flex", justifyContent: "space-between", marginBottom: 4 },
+
   primaryButton: {
-    padding: '15px 25px',
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '16px'
+    padding: "12px 20px",
+    background: "#3498db",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
   },
   secondaryButton: {
-    padding: '15px 25px',
-    backgroundColor: '#2ecc71',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '16px'
+    padding: "10px 16px",
+    background: "#2ecc71",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    cursor: "pointer",
   },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: '30px',
-    borderRadius: '10px',
-    maxWidth: '500px',
-    margin: '0 auto',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-  },
-  description: {
-    textAlign: 'center',
-    color: '#7f8c8d',
-    marginBottom: '25px'
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px'
-  },
-  inputGroup: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px'
-  },
-  label: {
-    fontWeight: 'bold',
-    color: '#2c3e50'
-  },
-  input: {
-    padding: '12px 15px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '16px'
-  },
-  select: {
-    padding: '12px 15px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '16px',
-    backgroundColor: 'white'
-  },
-  submitButton: {
-    padding: '15px',
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    fontWeight: 'bold'
-  },
-  submitButtonDisabled: {
-    padding: '15px',
-    backgroundColor: '#bdc3c7',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'not-allowed',
-    fontSize: '16px',
-    fontWeight: 'bold'
-  }
 };
-
-export default BusinessDashboard;

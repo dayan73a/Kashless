@@ -1,86 +1,80 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// src/App.jsx
 import React from 'react';
-// Importa el hook personalizado del contexto
-import { useApp } from './context/AppContext';
-import Login from './components/Login';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
 
+import { useApp } from './context/AppContext.jsx';
+import { I18nProvider, useI18n } from './context/I18nContext.jsx';
+import LanguageGate from './components/LanguageGate.jsx';
+import LanguageSwitcher from './components/LanguageSwitcher.jsx';
 
-// Componentes lazy
-const Dashboard = React.lazy(() => import('./components/Dashboard'));
-const QrScanner = React.lazy(() => import('./components/QrScanner'));
-const Payment = React.lazy(() => import('./components/Payment'));
-const Confirmacion = React.lazy(() => import('./components/Confirmacion'));
-const TransactionHistory = React.lazy(() => import('./components/TransactionHistory'));
-// 👇 AGREGAR IMPORT DEL BUSINESS DASHBOARD
-const BusinessDashboard = React.lazy(() => import('./components/BusinessDashboard'));
+import Login from './components/Login.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import QrScanner from './components/QrScanner.jsx';
+import Payment from './components/Payment.jsx';
+import Confirmacion from './components/Confirmacion.jsx';
+import TransactionHistory from './components/TransactionHistory.jsx';
+import BusinessDashboard from './components/BusinessDashboard.jsx';
+import BusinessSettings from './components/BusinessSettings.jsx';
 
-function App() {
-  // Usa el contexto en lugar del estado local
-  const { user, loading } = useApp();
-
-  if (loading) {
-    return <div>Cargando...</div>;
+function RequireLanguage({ children }) {
+  const { ready } = useI18n();
+  const location = useLocation();
+  if (!ready && location.pathname !== '/language') {
+    return <Navigate to="/language" replace />;
   }
+  return children;
+}
+
+function AppRoutes() {
+  const { user, loading } = useApp();
+  const { lang } = useI18n();
+
+  if (loading) return <div>Cargando...</div>;
 
   return (
-    <Router>
-      <Routes>
-        <Route 
-          path="/" 
-          element={user ? <Navigate to="/dashboard" /> : <Login />} 
-        />
-        <Route 
-          path="/dashboard" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando dashboard...</div>}>
-              <Dashboard />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/scanner" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando scanner...</div>}>
-              <QrScanner />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/payment" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando pago...</div>}>
-              <Payment />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/confirmacion" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando confirmación...</div>}>
-              <Confirmacion />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/history" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando historial...</div>}>
-              <TransactionHistory />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-        {/* 👇 NUEVA RUTA PARA EL PANEL DE NEGOCIO */}
-        <Route 
-          path="/business-dashboard" 
-          element={user ? 
-            <React.Suspense fallback={<div>Cargando panel de negocio...</div>}>
-              <BusinessDashboard />
-            </React.Suspense> 
-            : <Navigate to="/" />} 
-        />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/language" element={<LanguageGate />} />
+      <Route
+        path="/*"
+        element={
+          <RequireLanguage>
+            <Routes>
+              <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+              <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+              <Route path="/scanner" element={user ? <QrScanner /> : <Navigate to="/" />} />
+              <Route path="/payment" element={user ? <Payment /> : <Navigate to="/" />} />
+              <Route path="/confirmacion" element={user ? <Confirmacion /> : <Navigate to="/" />} />
+              <Route path="/history" element={user ? <TransactionHistory /> : <Navigate to="/" />} />
+              <Route
+                path="/business-dashboard"
+                element={user ? <BusinessDashboard key={`biz-${lang}`} /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/business-settings"
+                element={user ? <BusinessSettings key={`bizset-${lang}`} /> : <Navigate to="/" />}
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </RequireLanguage>
+        }
+      />
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <I18nProvider>
+      <Router>
+        <LanguageSwitcher />
+        <AppRoutes />
+      </Router>
+    </I18nProvider>
+  );
+}

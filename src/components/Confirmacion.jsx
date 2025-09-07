@@ -1,12 +1,15 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { activateMachine } from '../lib/ble';
 
-const PaymentSuccess = () => {
+
+const Confirmacion = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
   // Datos de la transacción exitosa
   const { amount, businessName, serviceName } = location.state || {};
+  const cents = Math.round((amount || 0) * 100);
 
   if (!location.state) {
     return (
@@ -23,6 +26,15 @@ const PaymentSuccess = () => {
       </div>
     );
   }
+
+  const handleActivate = async () => {
+    try {
+      await activateMachine(cents); // 👈 gesto del usuario
+      alert("Máquina activada ✅");
+    } catch (e) {
+      alert(e?.message || "No se pudo activar la máquina");
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -62,6 +74,14 @@ const PaymentSuccess = () => {
       </div>
 
       <div style={styles.buttonGroup}>
+        {/* 🔌 Botón para activar la máquina por BLE */}
+        <button 
+          style={styles.primaryButton}
+          onClick={handleActivate}
+        >
+          ⚡ Conectar y activar máquina
+        </button>
+
         <button 
           style={styles.primaryButton}
           onClick={() => navigate('/scanner')}
@@ -120,13 +140,14 @@ const styles = {
     boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
     textAlign: 'left'
   },
-  detailRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px 0',
-    borderBottom: '1px solid #eee'
-  },
+ detailRow: {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '10px 0',
+  borderBottom: '1px solid #eee'
+},
+
   detailLabel: {
     fontWeight: 'bold',
     color: '#555'
@@ -195,4 +216,4 @@ const styles = {
   }
 };
 
-export default PaymentSuccess;
+export default Confirmacion;

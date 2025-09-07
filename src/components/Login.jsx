@@ -1,9 +1,11 @@
+// src/components/Login.jsx
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, collection, addDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { useI18n } from '../context/I18nContext.jsx';
 import './Login.css';
 
 const Login = () => {
@@ -17,15 +19,23 @@ const Login = () => {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const { appConfig } = useApp();
+  const { t, lang } = useI18n();
+  const isEN = lang === 'en';
+
+  // Utilidad: usa t() si existe la clave; si no, usa fallback
+  const tt = (key, fallback) => {
+    const v = t(key);
+    return v === key ? fallback : v;
+  };
+
   const logoPath = appConfig?.app_logo || "/logo.png";
 
   const crearNegocio = async (userId, userEmail) => {
     try {
       console.log("Creando negocio para:", userEmail);
-      
       const negocioRef = await addDoc(collection(db, 'businesses'), {
         nombre: nombreNegocio,
         direccion: direccionNegocio,
@@ -37,11 +47,10 @@ const Login = () => {
         fecha_creacion: new Date(),
         activo: true,
         configuracion: {
-          comision_porcentaje: 3,
-          moneda: "MXN"
+          comision_porcentaje: 3, // puedes ajustarlo luego en el panel
+          moneda: "USD"
         }
       });
-      
       console.log("Negocio creado con ID:", negocioRef.id);
       return negocioRef.id;
     } catch (error) {
@@ -54,39 +63,40 @@ const Login = () => {
     e.preventDefault();
     setCargando(true);
     setError('');
-    
     try {
       if (esDueno && (!nombreNegocio || !direccionNegocio)) {
-        setError('Por favor completa todos los campos del negocio');
+        setError(isEN ? 'Please complete all business fields' : 'Por favor completa todos los campos del negocio');
         setCargando(false);
         return;
       }
 
-      // 1. PRIMERO crear el usuario en Authentication
+      // 1) Crear usuario en Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
+      // 2) Crear negocio si corresponde
       let negocioId = null;
-      
       if (esDueno) {
-        // 2. LUEGO crear el negocio y obtener su ID
         negocioId = await crearNegocio(user.uid, email);
       }
 
-      // 3. FINALMENTE crear el documento del usuario en Firestore
+      // 3) Crear documento de usuario en Firestore
       await setDoc(doc(db, 'users', user.uid), {
-        email: email,
+        email,
         saldo_general: 0,
-        es_dueno: esDueno,        // ← Valor correcto
-        negocio_id: negocioId,    // ← ID del negocio o null
+        es_dueno: esDueno,
+        negocio_id: negocioId,
         fecha_creacion: new Date()
       });
-      
-      alert(esDueno ? '¡Negocio registrado con éxito! 🎉' : 'Usuario registrado con éxito! 🎉');
+
+      alert(esDueno
+        ? (isEN ? 'Business registered successfully! 🎉' : '¡Negocio registrado con éxito! 🎉')
+        : (isEN ? 'User registered successfully! 🎉' : '¡Usuario registrado con éxito! 🎉')
+      );
       navigate('/dashboard');
     } catch (error) {
       console.error("Error completo en registro:", error);
-      setError('Error: ' + error.message);
+      setError((isEN ? 'Error: ' : 'Error: ') + error.message);
     } finally {
       setCargando(false);
     }
@@ -96,21 +106,18 @@ const Login = () => {
     e.preventDefault();
     setCargando(true);
     setError('');
-    
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Verificar si existe en Firestore, sino crearlo
+      // Garantiza doc en Firestore si no existe
       const userDocRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
-
       if (!userDoc.exists()) {
-        // Crear documento básico para usuarios que vienen de Authentication pero no tienen documento
         await setDoc(userDocRef, {
           email: user.email,
           saldo_general: 0,
-          es_dueno: false, // Por defecto es cliente
+          es_dueno: false,
           fecha_creacion: new Date()
         });
         console.log("Documento de usuario creado automáticamente");
@@ -118,108 +125,106 @@ const Login = () => {
 
       navigate('/dashboard');
     } catch (error) {
-      setError('Error: ' + error.message);
+      setError((isEN ? 'Error: ' : 'Error: ') + error.message);
     } finally {
       setCargando(false);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setMostrarPassword(!mostrarPassword);
-  };
+  const togglePasswordVisibility = () => setMostrarPassword(!mostrarPassword);
 
-  // VISTA DE LOGIN (NO REGISTRO)
+  // VISTA LOGIN
   if (!estaRegistrando) {
     return (
       <div className="login-container">
         <div className="login-header">
+          {/* Si quieres usar logo: <img src={logoPath} alt="Kashless" style={{height:40}} /> */}
           <h1>Kashless</h1>
-          <p>Sistema de pagos para negocios</p>
+          <p>{tt('login.subtitle', 'Sistema de pagos para negocios')}</p>
         </div>
-        
+
         <div className="login-form">
           {error && <div className="error-message">{error}</div>}
-          
-          <h2>Iniciar Sesión</h2>
-          
+
+          <h2>{isEN ? 'Sign in' : 'Iniciar Sesión'}</h2>
+
+
           <div className="form-group">
             <div className="input-with-icon">
               <i className="fas fa-envelope"></i>
               <input
                 type="email"
-                placeholder="Correo electrónico"
+                placeholder={isEN ? "Email" : "Correo electrónico"}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={cargando}
+                autoComplete="email"
               />
             </div>
           </div>
-          
+
           <div className="form-group">
             <div className="input-with-icon password-field">
               <i className="fas fa-lock"></i>
               <input
                 type={mostrarPassword ? "text" : "password"}
-                placeholder="Contraseña"
+                placeholder={isEN ? "Password" : "Contraseña"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={cargando}
+                autoComplete="current-password"
               />
               <span className="toggle-password" onClick={togglePasswordVisibility}>
                 <i className={`fas ${mostrarPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
               </span>
             </div>
           </div>
-          
-          <button 
-            className="btn btn-primary" 
-            onClick={handleLogin}
-            disabled={cargando}
-          >
-            {cargando ? "Ingresando..." : "Ingresar a mi cuenta"}
+
+          <button className="btn btn-primary" onClick={handleLogin} disabled={cargando}>
+            {cargando ? (isEN ? "Signing in..." : "Ingresando...") : (isEN ? "Sign in" : "Ingresar a mi cuenta")}
           </button>
-          
+
           <div className="divider">
-            <span className="divider-text">o</span>
+            <span className="divider-text">{tt('login.or', 'o')}</span>
           </div>
-          
-          <button 
-            className="btn btn-secondary" 
-            onClick={() => setEstaRegistrando(true)}
-            disabled={cargando}
-          >
-            Crear cuenta nueva
+
+          <button className="btn btn-secondary" onClick={() => setEstaRegistrando(true)} disabled={cargando}>
+            {isEN ? "Create new account" : "Crear cuenta nueva"}
           </button>
         </div>
       </div>
     );
   }
 
-  // VISTA DE REGISTRO
+  // VISTA REGISTRO
   return (
     <div className="login-container">
       <div className="login-header">
         <h1>Kashless</h1>
-        <p>Sistema de pagos para negocios</p>
+        <p>{tt('login.subtitle', 'Sistema de pagos para negocios')}</p>
       </div>
-      
+
       <div className="login-form">
         {error && <div className="error-message">{error}</div>}
-        
-        <h2>{esDueno ? 'Registrar mi negocio' : 'Crear cuenta de cliente'}</h2>
-        
+
+        <h2>
+          {esDueno
+            ? (isEN ? 'Register my business' : 'Registrar mi negocio')
+            : (isEN ? 'Create customer account' : 'Crear cuenta de cliente')}
+        </h2>
+
         <div className="toggle-container">
           <button
             className={!esDueno ? "toggle-button active" : "toggle-button"}
             onClick={() => setEsDueno(false)}
           >
-            👤 Soy Cliente
+            {isEN ? "👤 I’m a Customer" : "👤 Soy Cliente"}
           </button>
           <button
             className={esDueno ? "toggle-button active" : "toggle-button"}
             onClick={() => setEsDueno(true)}
           >
-            🏪 Tengo un Negocio
+            {isEN ? "🏪 I have a Business" : "🏪 Tengo un Negocio"}
           </button>
         </div>
 
@@ -228,23 +233,25 @@ const Login = () => {
             <i className="fas fa-envelope"></i>
             <input
               type="email"
-              placeholder="Correo electrónico"
+              placeholder={isEN ? "Email" : "Correo electrónico"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={cargando}
+              autoComplete="email"
             />
           </div>
         </div>
-        
+
         <div className="form-group">
           <div className="input-with-icon password-field">
             <i className="fas fa-lock"></i>
             <input
               type={mostrarPassword ? "text" : "password"}
-              placeholder="Contraseña (mínimo 6 caracteres)"
+              placeholder={isEN ? "Password (min 6 chars)" : "Contraseña (mínimo 6 caracteres)"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={cargando}
+              autoComplete="new-password"
             />
             <span className="toggle-password" onClick={togglePasswordVisibility}>
               <i className={`fas ${mostrarPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
@@ -256,60 +263,55 @@ const Login = () => {
           <div className="negocio-section">
             <div className="section-header">
               <span className="section-icon">🏪</span>
-              <h3>Información del Negocio</h3>
+              <h3>{isEN ? "Business Information" : "Información del Negocio"}</h3>
             </div>
-            
+
             <div className="form-group">
               <input
                 type="text"
-                placeholder="Nombre de tu negocio"
+                placeholder={isEN ? "Business name" : "Nombre de tu negocio"}
                 value={nombreNegocio}
                 onChange={(e) => setNombreNegocio(e.target.value)}
                 disabled={cargando}
               />
             </div>
-            
+
             <div className="formgroup">
               <input
                 type="text"
-                placeholder="Dirección completa"
+                placeholder={isEN ? "Full address" : "Dirección completa"}
                 value={direccionNegocio}
                 onChange={(e) => setDireccionNegocio(e.target.value)}
                 disabled={cargando}
               />
             </div>
-            
+
             <div className="form-group">
               <select
                 value={tipoNegocio}
                 onChange={(e) => setTipoNegocio(e.target.value)}
                 disabled={cargando}
               >
-                <option value="lavanderia">🧺 Lavandería</option>
-                <option value="cafeteria">☕ Cafetería</option>
-                <option value="restaurante">🍽️ Restaurante</option>
-                <option value="tienda">🛒 Tienda</option>
-                <option value="barberia">✂️ Barbería</option>
-                <option value="otros">🏪 Otro tipo de negocio</option>
+                <option value="lavanderia">{isEN ? "🧺 Laundromat" : "🧺 Lavandería"}</option>
+                <option value="cafeteria">{isEN ? "☕ Coffee shop" : "☕ Cafetería"}</option>
+                <option value="restaurante">{isEN ? "🍽️ Restaurant" : "🍽️ Restaurante"}</option>
+                <option value="tienda">{isEN ? "🛒 Store" : "🛒 Tienda"}</option>
+                <option value="barberia">{isEN ? "✂️ Barbershop" : "✂️ Barbería"}</option>
+                <option value="otros">{isEN ? "🏪 Other business" : "🏪 Otro tipo de negocio"}</option>
               </select>
             </div>
           </div>
         )}
 
-        <button 
-          className="btn btn-primary"
-          onClick={handleRegister}
-          disabled={cargando}
-        >
-          {cargando ? "Creando cuenta..." : (esDueno ? "Registrar mi negocio" : "Crear cuenta")}
+        <button className="btn btn-primary" onClick={handleRegister} disabled={cargando}>
+          {cargando
+            ? (isEN ? "Creating account..." : "Creando cuenta...")
+            : (esDueno ? (isEN ? "Register my business" : "Registrar mi negocio")
+                        : (isEN ? "Create account" : "Crear cuenta"))}
         </button>
-        
-        <button 
-          className="btn btn-text"
-          onClick={() => setEstaRegistrando(false)}
-          disabled={cargando}
-        >
-          ← Volver al inicio de sesión
+
+        <button className="btn btn-text" onClick={() => setEstaRegistrando(false)} disabled={cargando}>
+          {isEN ? "← Back to sign in" : "← Volver al inicio de sesión"}
         </button>
       </div>
     </div>

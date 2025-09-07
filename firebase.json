@@ -4,11 +4,19 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
-        "source": "**/*.@(js|css|woff2|svg|png|jpg|jpeg|gif|ico|webp)",
+        "source": "**/*.@(js|mjs|css|woff2|svg|png|jpg|jpeg|gif|ico|webp)",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
       },
       {
-        "source": "index.html",
+        "source": "/index.html",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "/sw.js",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "/manifest.webmanifest",
         "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
       }
     ],
@@ -17,5 +25,8 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "src/functions"
   }
 }
