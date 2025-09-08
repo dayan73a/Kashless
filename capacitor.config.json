@@ -1,5 +1,18 @@
 {
   "appId": "com.kashless.app",
   "appName": "Kashless",
-  "webDir": "dist"
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "ios": {
+    "scheme": "App",
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "allowsLinkPreview": false,
+    "backgroundColor": "#ffffff",
+    "allowNavigation": []
+  },
+  "server": {
+    "cleartext": true,
+    "url": "http://localhost:5173"
+  }
 }

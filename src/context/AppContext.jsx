@@ -1,92 +1,105 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth, db } from '../firebase';
-import { doc, onSnapshot, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+// src/context/AppContext.jsx
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { auth, db } from '../firebase'
+import { onAuthStateChanged, signInAnonymously } from 'firebase/auth'
+import { doc, onSnapshot, getDoc } from 'firebase/firestore'
 
-// Crear el contexto
-const AppContext = createContext();
+const AppContext = createContext(null)
 
-// Hook personalizado para usar el contexto
 export const useApp = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error('useApp debe usarse dentro de un AppProvider');
-  }
-  return context;
-};
+  const ctx = useContext(AppContext)
+  if (!ctx) throw new Error('useApp debe usarse dentro de un AppProvider')
+  return ctx
+}
 
-// Proveedor del contexto
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [appConfig, setAppConfig] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null)
+  const [userData, setUserData] = useState(null)
+  const [appConfig, setAppConfig] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const triedAnonRef = useRef(false)
+  const unsubUserDocRef = useRef(null)
 
-  // 👇 Función para cargar la configuración global
+  // Config global (no bloquea loading)
   const loadAppConfig = async () => {
     try {
-      const docRef = doc(db, 'app_config', 'main');
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setAppConfig(docSnap.data());
-      } else {
-        console.log("No se encontró configuración global");
-      }
-    } catch (error) {
-      console.error("Error cargando configuración:", error);
+      const snap = await getDoc(doc(db, 'app_config', 'main'))
+      if (snap.exists()) setAppConfig(snap.data())
+    } catch (e) {
+      console.warn('Error cargando configuración:', e)
     }
-  };
+  }
 
   useEffect(() => {
-    // Cargar configuración global al iniciar
-    loadAppConfig();
+    loadAppConfig()
 
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      
-      if (user) {
-        // Suscribirse a los datos del usuario en Firestore
-        const userDocRef = doc(db, 'users', user.uid);
-        const unsubscribeFirestore = onSnapshot(userDocRef, (doc) => {
-          if (doc.exists()) {
-            setUserData(doc.data());
-          } else {
-            setUserData(null);
-          }
-          setLoading(false);
-        });
-
-        return () => unsubscribeFirestore();
-      } else {
-        setUserData(null);
-        setLoading(false);
+    // Observa sesión
+    const unsubAuth = onAuthStateChanged(auth, async (u) => {
+      // Limpia suscripción previa al doc del usuario
+      if (unsubUserDocRef.current) {
+        unsubUserDocRef.current()
+        unsubUserDocRef.current = null
       }
-    });
 
-    return () => unsubscribeAuth();
-  }, []);
+      if (u) {
+        setUser(u)
+        // Suscribe a users/{uid}
+        const ref = doc(db, 'users', u.uid)
+        unsubUserDocRef.current = onSnapshot(
+          ref,
+          (docSnap) => {
+            setUserData(docSnap.exists() ? docSnap.data() : null)
+            setLoading(false)
+          },
+          (err) => {
+            console.warn('onSnapshot user error:', err)
+            setUserData(null)
+            setLoading(false)
+          }
+        )
+        return
+      }
 
-  // 👇 CREAR currentUser COMBINADO
-  const currentUser = user ? {
-    uid: user.uid,
-    email: user.email,
-    ...userData  // Combina todos los campos de Firestore
-  } : null;
+      // No hay usuario: intenta anónimo UNA vez
+      setUser(null)
+      setUserData(null)
+      if (!triedAnonRef.current) {
+        triedAnonRef.current = true
+        try {
+          await signInAnonymously(auth)
+          // onAuthStateChanged volverá a disparar y cerrará loading
+        } catch (e) {
+          console.warn('Anon sign-in failed:', e)
+          setLoading(false) // no bloquees la UI si falla
+        }
+      } else {
+        // Ya intentamos antes → no bloquees
+        setLoading(false)
+      }
+    })
+
+    return () => {
+      unsubAuth()
+      if (unsubUserDocRef.current) {
+        unsubUserDocRef.current()
+        unsubUserDocRef.current = null
+      }
+    }
+  }, [])
+
+  const currentUser = user
+    ? { uid: user.uid, email: user.email ?? null, ...userData }
+    : null
 
   const value = {
     user,
     userData,
     appConfig,
-    loading,
+    currentUser,
     saldo: userData?.saldo_general || 0,
+    loading,
     refreshAppConfig: loadAppConfig,
-    // 👇 AGREGAR USUARIO COMBINADO
-    currentUser  // ¡Este es el campo nuevo!
-  };
+  }
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
-};
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
+}

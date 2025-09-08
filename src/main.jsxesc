@@ -1,4 +1,4 @@
-// === DEBUG DIAGNÓSTICO ===
+≈// === DEBUG DIAGNÓSTICO ===
 console.log('🔍 MAIN.JSX INICIADO');
 console.log('📍 URL:', window.location.href);
 console.log('📁 Ruta actual:', window.location.pathname);
@@ -23,6 +23,7 @@ if (typeof process === 'undefined') {
 // === FIN DEBUG ===
 
 // Tu código original continúa aquí...
+import React from 'react'
 // ...
 // src/main.jsx (o el que sea tu entry)
 import React, { useEffect } from 'react'

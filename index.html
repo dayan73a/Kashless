@@ -2,24 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="./">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content: capacitor://localhost:">
     <title>Kashless</title>
+    <link rel="icon" href="./vite.svg" />
+    <script>
+      if (typeof global === 'undefined') { window.global = window; }
+      if (typeof process === 'undefined') { window.process = { env: {} }; }
+      console.log('🌍 Protocolo:', window.location.protocol);
+      console.log('🔧 Capacitor disponible:', !!window.Capacitor);
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Registro del Service Worker -->
     <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("/sw.js")
-            .then(() => console.log("✅ SW registrado"))
-            .catch(err => console.error("❌ Error registrando SW:", err));
-        });
+    (function () {
+      function show(msg) {
+        var d = document.createElement('div');
+        d.style.position='fixed'; d.style.inset='0'; d.style.zIndex='999999';
+        d.style.background='#111'; d.style.color='#fff'; d.style.padding='16px';
+        d.style.font='14px/1.4 -apple-system,system-ui,sans-serif';
+        d.style.overflow='auto'; d.style.whiteSpace='pre-wrap';
+        d.innerHTML = '<b>⚠️ JavaScript error</b><hr><div>'+String(msg)+'</div>';
+        document.body.appendChild(d);
       }
+      window.addEventListener('error', function (e) {
+        if (e.target && e.target.tagName) {
+          const src = e.target.src || e.target.href || '(inline)';
+          show('Resource error: ' + e.target.tagName + ' → ' + src); return;
+        }
+        if (e.error) { show(e.error.stack || e.error.message || e.error); return; }
+        show(e.message || 'Unknown error');
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        var r = e.reason || e;
+        show('Unhandled rejection: ' + (r.stack || r.message || r));
+      });
+      console.log('[OVERLAY] ready');
+    })();
     </script>
   </body>
 </html>

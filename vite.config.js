@@ -1,28 +1,44 @@
-// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import { resolve } from 'path'
 
-// Config minimal y estable. Quitamos Babel del medio.
 export default defineConfig({
+  base: './', // important for Capacitor
   plugins: [react()],
 
-  // Alias para librerías que esperan APIs de Node en el navegador (ya las tienes instaladas)
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: { main: resolve(__dirname, 'index.html') },
+      output: {
+        entryFileNames: 'assets/index-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    }
+  },
+
   resolve: {
     alias: {
       stream: 'stream-browserify',
       crypto: 'crypto-browserify',
       buffer: 'buffer',
+      // '@': new URL('./src', import.meta.url).pathname,
     },
   },
 
-  // Pequeños polyfills para que no fallen librerías que acceden a process/global
   define: {
     'process.env': {},
     global: 'globalThis',
   },
 
-  // Forzamos a Vite a pre-empacar estos polyfills (evita warnings)
   optimizeDeps: {
     include: ['buffer', 'stream-browserify', 'crypto-browserify'],
   },
+
+  server: {
+    host: true,
+    port: 5173
+  }
 })

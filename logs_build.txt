@@ -1,0 +1,18 @@
+
+> kashless-pwa@0.0.0 build
+> vite build
+
+vite v7.1.4 building for production...
+transforming...
+✓ 60 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  2.08 kB │ gzip:   1.01 kB
+dist/assets/main-CYhVTcCy.css    4.57 kB │ gzip:   1.52 kB
+dist/assets/index-NWGV_v7_.js  676.47 kB │ gzip: 178.59 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 789ms
