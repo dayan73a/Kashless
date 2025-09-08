@@ -1,0 +1,2913 @@
+
+> kashless-pwa@0.0.0 dev
+> vite
+
+2025-09-08T03:43:06.506Z vite:config config file loaded in 19.60ms
+2025-09-08T03:43:06.508Z vite:env loading env files: [
+  '/Users/dayan/Proyecto/Kashless/.env',
+  '/Users/dayan/Proyecto/Kashless/.env.local',
+  '/Users/dayan/Proyecto/Kashless/.env.development',
+  '/Users/dayan/Proyecto/Kashless/.env.development.local'
+]
+2025-09-08T03:43:06.508Z vite:env env files loaded in 0.29ms
+2025-09-08T03:43:06.508Z vite:env using resolved env: {}
+2025-09-08T03:43:06.514Z vite:config using resolved config: {
+  base: '/',
+  plugins: [
+    'vite:optimized-deps',
+    'vite:watch-package-data',
+    'vite:pre-alias',
+    'alias',
+    'vite:react-swc:resolve-runtime',
+    'vite:modulepreload-polyfill',
+    'vite:resolve',
+    'vite:html-inline-proxy',
+    'vite:css',
+    'vite:json',
+    'vite:wasm-helper',
+    'vite:worker',
+    'vite:asset',
+    'vite:react-swc',
+    'vite:wasm-fallback',
+    'vite:define',
+    'vite:css-post',
+    'vite:worker-import-meta-url',
+    'vite:asset-import-meta-url',
+    'vite:dynamic-import-vars',
+    'vite:import-glob',
+    'vite:client-inject',
+    'vite:css-analysis',
+    'vite:import-analysis'
+  ],
+  build: {
+    target: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+    polyfillModulePreload: true,
+    modulePreload: { polyfill: true },
+    outDir: 'dist',
+    assetsDir: 'assets',
+    assetsInlineLimit: 4096,
+    sourcemap: false,
+    terserOptions: {},
+    rollupOptions: {
+      input: { main: '/Users/dayan/Proyecto/Kashless/index.html' },
+      output: {
+        entryFileNames: 'assets/index-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash][extname]'
+      }
+    },
+    commonjsOptions: { include: [ /node_modules/ ], extensions: [ '.js', '.cjs' ] },
+    dynamicImportVarsOptions: { warnOnError: true, exclude: [ /node_modules/ ] },
+    write: true,
+    emptyOutDir: true,
+    copyPublicDir: true,
+    manifest: false,
+    lib: false,
+    ssrManifest: false,
+    ssrEmitAssets: false,
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 500,
+    watch: null,
+    cssCodeSplit: true,
+    minify: 'esbuild',
+    ssr: false,
+    emitAssets: false,
+    createEnvironment: [Function: createEnvironment],
+    cssTarget: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+    cssMinify: true
+  },
+  resolve: {
+    externalConditions: [ 'node', 'module-sync' ],
+    extensions: [
+      '.mjs',  '.js',
+      '.mts',  '.ts',
+      '.jsx',  '.tsx',
+      '.json'
+    ],
+    dedupe: [],
+    noExternal: [],
+    external: [],
+    preserveSymlinks: false,
+    alias: [
+      { find: 'stream', replacement: 'stream-browserify' },
+      { find: 'crypto', replacement: 'crypto-browserify' },
+      { find: 'buffer', replacement: 'buffer' },
+      {
+        find: /^\/?@vite\/env/,
+        replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/env.mjs'
+      },
+      {
+        find: /^\/?@vite\/client/,
+        replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/client.mjs'
+      }
+    ],
+    mainFields: [ 'browser', 'module', 'jsnext:main', 'jsnext' ],
+    conditions: [ 'module', 'browser', 'development|production' ],
+    builtins: []
+  },
+  define: { 'process.env': {}, global: 'globalThis' },
+  optimizeDeps: {
+    include: [
+      'buffer',
+      'stream-browserify',
+      'crypto-browserify',
+      'react/jsx-dev-runtime'
+    ],
+    exclude: [],
+    needsInterop: [],
+    extensions: [],
+    disabled: undefined,
+    holdUntilCrawlEnd: true,
+    force: false,
+    noDiscovery: false,
+    esbuildOptions: { preserveSymlinks: false, jsx: 'automatic' }
+  },
+  server: {
+    port: 5173,
+    strictPort: false,
+    host: true,
+    allowedHosts: [],
+    https: undefined,
+    open: false,
+    proxy: undefined,
+    cors: {
+      origin: /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/
+    },
+    headers: {},
+    warmup: { clientFiles: [], ssrFiles: [] },
+    middlewareMode: false,
+    fs: {
+      strict: true,
+      deny: [ '.env', '.env.*', '*.{crt,pem}', '**/.git/**' ],
+      allow: [ '/Users/dayan/Proyecto/Kashless' ]
+    },
+    preTransformRequests: true,
+    perEnvironmentStartEndDuringDev: false,
+    sourcemapIgnoreList: [Function: isInNodeModules]
+  },
+  esbuild: false,
+  oxc: false,
+  environments: {
+    client: {
+      define: { 'process.env': {}, global: 'globalThis' },
+      resolve: {
+        externalConditions: [ 'node', 'module-sync' ],
+        extensions: [
+          '.mjs',  '.js',
+          '.mts',  '.ts',
+          '.jsx',  '.tsx',
+          '.json'
+        ],
+        dedupe: [],
+        noExternal: [],
+        external: [],
+        preserveSymlinks: false,
+        alias: [
+          { find: 'stream', replacement: 'stream-browserify' },
+          { find: 'crypto', replacement: 'crypto-browserify' },
+          { find: 'buffer', replacement: 'buffer' },
+          {
+            find: /^\/?@vite\/env/,
+            replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/env.mjs'
+          },
+          {
+            find: /^\/?@vite\/client/,
+            replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/client.mjs'
+          }
+        ],
+        mainFields: [ 'browser', 'module', 'jsnext:main', 'jsnext' ],
+        conditions: [ 'module', 'browser', 'development|production' ],
+        builtins: []
+      },
+      keepProcessEnv: false,
+      consumer: 'client',
+      optimizeDeps: {
+        include: [
+          'buffer',
+          'stream-browserify',
+          'crypto-browserify',
+          'react/jsx-dev-runtime'
+        ],
+        exclude: [],
+        needsInterop: [],
+        extensions: [],
+        disabled: undefined,
+        holdUntilCrawlEnd: true,
+        force: false,
+        noDiscovery: false,
+        esbuildOptions: { preserveSymlinks: false, jsx: 'automatic' }
+      },
+      dev: {
+        warmup: [],
+        sourcemap: { js: true },
+        sourcemapIgnoreList: [Function: isInNodeModules],
+        preTransformRequests: true,
+        createEnvironment: [Function: defaultCreateClientDevEnvironment],
+        recoverable: true,
+        moduleRunnerTransform: false
+      },
+      build: {
+        target: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+        polyfillModulePreload: true,
+        modulePreload: { polyfill: true },
+        outDir: 'dist',
+        assetsDir: 'assets',
+        assetsInlineLimit: 4096,
+        sourcemap: false,
+        terserOptions: {},
+        rollupOptions: {
+          input: { main: '/Users/dayan/Proyecto/Kashless/index.html' },
+          output: {
+            entryFileNames: 'assets/index-[hash].js',
+            chunkFileNames: 'assets/[name]-[hash].js',
+            assetFileNames: 'assets/[name]-[hash][extname]'
+          }
+        },
+        commonjsOptions: { include: [ /node_modules/ ], extensions: [ '.js', '.cjs' ] },
+        dynamicImportVarsOptions: { warnOnError: true, exclude: [ /node_modules/ ] },
+        write: true,
+        emptyOutDir: true,
+        copyPublicDir: true,
+        manifest: false,
+        lib: false,
+        ssrManifest: false,
+        ssrEmitAssets: false,
+        reportCompressedSize: true,
+        chunkSizeWarningLimit: 500,
+        watch: null,
+        cssCodeSplit: true,
+        minify: 'esbuild',
+        ssr: false,
+        emitAssets: true,
+        createEnvironment: [Function: createEnvironment],
+        cssTarget: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+        cssMinify: true
+      },
+      plugins: [
+        {
+          name: 'vite:optimized-deps',
+          applyToEnvironment: [Function: applyToEnvironment],
+          resolveId: [Function: resolveId],
+          load: [AsyncFunction: load]
+        },
+        {
+          name: 'vite:watch-package-data',
+          buildStart: [Function: buildStart],
+          buildEnd: [Function: buildEnd],
+          watchChange: [Function: watchChange]
+        },
+        {
+          name: 'vite:pre-alias',
+          applyToEnvironment: [Function: applyToEnvironment],
+          resolveId: [AsyncFunction: resolveId]
+        },
+        {
+          name: 'alias',
+          buildStart: [AsyncFunction: buildStart],
+          resolveId: [Function: resolveId]
+        },
+        {
+          name: 'vite:react-swc:resolve-runtime',
+          apply: 'serve',
+          enforce: 'pre',
+          resolveId: {
+            filter: { id: /^\/@react\-refresh$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^\/@react\-refresh$/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:modulepreload-polyfill',
+          resolveId: {
+            filter: { id: /^vite\/modulepreload\-polyfill$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^ vite\/modulepreload\-polyfill\.js$/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:resolve',
+          resolveId: {
+            filter: { id: { exclude: /^(?:\0|\/?virtual:)/ } },
+            handler: [AsyncFunction: handler]
+          },
+          load: {
+            filter: {
+              id: [
+                /^__vite\-browser\-external/,
+                /^__vite\-optional\-peer\-dep/
+              ]
+            },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:html-inline-proxy',
+          resolveId: {
+            filter: { id: /[?&]html-proxy\b/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /[?&]html-proxy\b/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:css',
+          buildStart: [Function: buildStart],
+          buildEnd: [Function: buildEnd],
+          load: {
+            filter: {
+              id: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/
+            },
+            handler: [AsyncFunction: handler]
+          },
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:json',
+          transform: {
+            filter: {
+              id: {
+                include: /\.json(?:$|\?)(?!commonjs-(?:proxy|external))/,
+                exclude: /[?&](?:worker|sharedworker|raw|url)\b/
+              }
+            },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:wasm-helper',
+          resolveId: {
+            filter: { id: /^ vite\/wasm\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: {
+              id: [
+                /^ vite\/wasm\-helper\.js$/,
+                /(?<![?#].*)\.wasm\?init/
+              ]
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:worker',
+          buildStart: [Function: buildStart],
+          load: {
+            filter: { id: /(?:\?|&)(worker|sharedworker)(?:&|$)/ },
+            handler: [AsyncFunction: handler]
+          },
+          shouldTransformCachedModule: [Function: shouldTransformCachedModule],
+          transform: {
+            filter: { id: /(?:\?|&)worker_file&type=(\w+)(?:&|$)/ },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [Function: renderChunk],
+          generateBundle: [Function: generateBundle]
+        },
+        {
+          name: 'vite:asset',
+          perEnvironmentStartEndDuringDev: true,
+          buildStart: [Function: buildStart],
+          resolveId: { handler: [Function: handler] },
+          load: {
+            filter: { id: { exclude: /^\0/ } },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [Function: renderChunk],
+          generateBundle: [Function: generateBundle]
+        },
+        {
+          name: 'vite:react-swc',
+          apply: 'serve',
+          config: [Function: config],
+          configResolved: [Function: configResolved],
+          transformIndexHtml: [Function: transformIndexHtml],
+          transform: [AsyncFunction: transform]
+        },
+        {
+          name: 'vite:wasm-fallback',
+          load: { filter: { id: /\.wasm$/ }, handler: [Function: handler] }
+        },
+        {
+          name: 'vite:define',
+          transform: { handler: [AsyncFunction: handler] }
+        },
+        {
+          name: 'vite:css-post',
+          renderStart: [Function: renderStart],
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [AsyncFunction: renderChunk],
+          augmentChunkHash: [Function: augmentChunkHash],
+          generateBundle: [AsyncFunction: generateBundle]
+        },
+        {
+          name: 'vite:worker-import-meta-url',
+          applyToEnvironment: [Function: applyToEnvironment],
+          shouldTransformCachedModule: [Function: shouldTransformCachedModule],
+          transform: {
+            filter: {
+              code: /new\s+(?:Worker|SharedWorker)\s*\(\s*new\s+URL.+?import\.meta\.url/s
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:asset-import-meta-url',
+          applyToEnvironment: [Function: applyToEnvironment],
+          transform: {
+            filter: {
+              id: {
+                exclude: [
+                  /^ vite\/preload\-helper\.js$/,
+                  /^\/Users\/dayan\/Proyecto\/Kashless\/node_modules\/vite\/dist\/client\/client\.mjs$/
+                ]
+              },
+              code: /new\s+URL.+import\.meta\.url/s
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:dynamic-import-vars',
+          resolveId: {
+            filter: { id: /^ vite\/dynamic\-import\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^ vite\/dynamic\-import\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          transform: {
+            filter: {
+              id: {
+                exclude: /^\/Users\/dayan\/Proyecto\/Kashless\/node_modules\/vite\/dist\/client\/client\.mjs$/
+              },
+              code: /\bimport\s*[(/]/
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:import-glob',
+          buildStart: [Function: buildStart],
+          transform: {
+            filter: { code: 'import.meta.glob' },
+            handler: [AsyncFunction: handler]
+          },
+          hotUpdate: [Function: hotUpdate]
+        },
+        {
+          name: 'vite:client-inject',
+          buildStart: [AsyncFunction: buildStart],
+          transform: [AsyncFunction: transform]
+        },
+        {
+          name: 'vite:css-analysis',
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:import-analysis',
+          transform: [AsyncFunction: transform]
+        }
+      ]
+    },
+    ssr: {
+      define: { 'process.env': {}, global: 'globalThis' },
+      resolve: {
+        externalConditions: [ 'node', 'module-sync' ],
+        extensions: [
+          '.mjs',  '.js',
+          '.mts',  '.ts',
+          '.jsx',  '.tsx',
+          '.json'
+        ],
+        dedupe: [],
+        noExternal: [],
+        external: [],
+        preserveSymlinks: false,
+        alias: [
+          { find: 'stream', replacement: 'stream-browserify' },
+          { find: 'crypto', replacement: 'crypto-browserify' },
+          { find: 'buffer', replacement: 'buffer' },
+          {
+            find: /^\/?@vite\/env/,
+            replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/env.mjs'
+          },
+          {
+            find: /^\/?@vite\/client/,
+            replacement: '/@fs/Users/dayan/Proyecto/Kashless/node_modules/vite/dist/client/client.mjs'
+          }
+        ],
+        mainFields: [ 'module', 'jsnext:main', 'jsnext' ],
+        conditions: [ 'module', 'node', 'development|production' ],
+        builtins: [
+          '_http_agent',         '_http_client',        '_http_common',
+          '_http_incoming',      '_http_outgoing',      '_http_server',
+          '_stream_duplex',      '_stream_passthrough', '_stream_readable',
+          '_stream_transform',   '_stream_wrap',        '_stream_writable',
+          '_tls_common',         '_tls_wrap',           'assert',
+          'assert/strict',       'async_hooks',         'buffer',
+          'child_process',       'cluster',             'console',
+          'constants',           'crypto',              'dgram',
+          'diagnostics_channel', 'dns',                 'dns/promises',
+          'domain',              'events',              'fs',
+          'fs/promises',         'http',                'http2',
+          'https',               'inspector',           'inspector/promises',
+          'module',              'net',                 'os',
+          'path',                'path/posix',          'path/win32',
+          'perf_hooks',          'process',             'punycode',
+          'querystring',         'readline',            'readline/promises',
+          'repl',                'stream',              'stream/consumers',
+          'stream/promises',     'stream/web',          'string_decoder',
+          'sys',                 'timers',              'timers/promises',
+          'tls',                 'trace_events',        'tty',
+          'url',                 'util',                'util/types',
+          'v8',                  'vm',                  'wasi',
+          'worker_threads',      'zlib',                /^node:/,
+          /^bun:/
+        ]
+      },
+      keepProcessEnv: true,
+      consumer: 'server',
+      optimizeDeps: {
+        include: [],
+        exclude: [],
+        needsInterop: [],
+        extensions: [],
+        disabled: undefined,
+        holdUntilCrawlEnd: true,
+        force: false,
+        noDiscovery: true,
+        esbuildOptions: { preserveSymlinks: false }
+      },
+      dev: {
+        warmup: [],
+        sourcemap: { js: true },
+        sourcemapIgnoreList: [Function: isInNodeModules],
+        preTransformRequests: false,
+        createEnvironment: [Function: defaultCreateDevEnvironment],
+        recoverable: false,
+        moduleRunnerTransform: true
+      },
+      build: {
+        target: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+        polyfillModulePreload: true,
+        modulePreload: { polyfill: true },
+        outDir: 'dist',
+        assetsDir: 'assets',
+        assetsInlineLimit: 4096,
+        sourcemap: false,
+        terserOptions: {},
+        rollupOptions: {
+          input: { main: '/Users/dayan/Proyecto/Kashless/index.html' },
+          output: {
+            entryFileNames: 'assets/index-[hash].js',
+            chunkFileNames: 'assets/[name]-[hash].js',
+            assetFileNames: 'assets/[name]-[hash][extname]'
+          }
+        },
+        commonjsOptions: { include: [ /node_modules/ ], extensions: [ '.js', '.cjs' ] },
+        dynamicImportVarsOptions: { warnOnError: true, exclude: [ /node_modules/ ] },
+        write: true,
+        emptyOutDir: true,
+        copyPublicDir: true,
+        manifest: false,
+        lib: false,
+        ssrManifest: false,
+        ssrEmitAssets: false,
+        reportCompressedSize: true,
+        chunkSizeWarningLimit: 500,
+        watch: null,
+        cssCodeSplit: true,
+        minify: false,
+        ssr: true,
+        emitAssets: false,
+        createEnvironment: [Function: createEnvironment],
+        cssTarget: [ 'chrome107', 'edge107', 'firefox104', 'safari16' ],
+        cssMinify: 'esbuild'
+      },
+      plugins: [
+        {
+          name: 'vite:watch-package-data',
+          buildStart: [Function: buildStart],
+          buildEnd: [Function: buildEnd],
+          watchChange: [Function: watchChange]
+        },
+        {
+          name: 'alias',
+          buildStart: [AsyncFunction: buildStart],
+          resolveId: [Function: resolveId]
+        },
+        {
+          name: 'vite:react-swc:resolve-runtime',
+          apply: 'serve',
+          enforce: 'pre',
+          resolveId: {
+            filter: { id: /^\/@react\-refresh$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^\/@react\-refresh$/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:modulepreload-polyfill',
+          resolveId: {
+            filter: { id: /^vite\/modulepreload\-polyfill$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^ vite\/modulepreload\-polyfill\.js$/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:resolve',
+          resolveId: {
+            filter: { id: { exclude: /^(?:\0|\/?virtual:)/ } },
+            handler: [AsyncFunction: handler]
+          },
+          load: {
+            filter: {
+              id: [
+                /^__vite\-browser\-external/,
+                /^__vite\-optional\-peer\-dep/
+              ]
+            },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:html-inline-proxy',
+          resolveId: {
+            filter: { id: /[?&]html-proxy\b/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /[?&]html-proxy\b/ },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:css',
+          buildStart: [Function: buildStart],
+          buildEnd: [Function: buildEnd],
+          load: {
+            filter: {
+              id: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/
+            },
+            handler: [AsyncFunction: handler]
+          },
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:json',
+          transform: {
+            filter: {
+              id: {
+                include: /\.json(?:$|\?)(?!commonjs-(?:proxy|external))/,
+                exclude: /[?&](?:worker|sharedworker|raw|url)\b/
+              }
+            },
+            handler: [Function: handler]
+          }
+        },
+        {
+          name: 'vite:wasm-helper',
+          resolveId: {
+            filter: { id: /^ vite\/wasm\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: {
+              id: [
+                /^ vite\/wasm\-helper\.js$/,
+                /(?<![?#].*)\.wasm\?init/
+              ]
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:worker',
+          buildStart: [Function: buildStart],
+          load: {
+            filter: { id: /(?:\?|&)(worker|sharedworker)(?:&|$)/ },
+            handler: [AsyncFunction: handler]
+          },
+          shouldTransformCachedModule: [Function: shouldTransformCachedModule],
+          transform: {
+            filter: { id: /(?:\?|&)worker_file&type=(\w+)(?:&|$)/ },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [Function: renderChunk],
+          generateBundle: [Function: generateBundle]
+        },
+        {
+          name: 'vite:asset',
+          perEnvironmentStartEndDuringDev: true,
+          buildStart: [Function: buildStart],
+          resolveId: { handler: [Function: handler] },
+          load: {
+            filter: { id: { exclude: /^\0/ } },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [Function: renderChunk],
+          generateBundle: [Function: generateBundle]
+        },
+        {
+          name: 'vite:react-swc',
+          apply: 'serve',
+          config: [Function: config],
+          configResolved: [Function: configResolved],
+          transformIndexHtml: [Function: transformIndexHtml],
+          transform: [AsyncFunction: transform]
+        },
+        {
+          name: 'vite:wasm-fallback',
+          load: { filter: { id: /\.wasm$/ }, handler: [Function: handler] }
+        },
+        {
+          name: 'vite:define',
+          transform: { handler: [AsyncFunction: handler] }
+        },
+        {
+          name: 'vite:css-post',
+          renderStart: [Function: renderStart],
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          },
+          renderChunk: [AsyncFunction: renderChunk],
+          augmentChunkHash: [Function: augmentChunkHash],
+          generateBundle: [AsyncFunction: generateBundle]
+        },
+        {
+          name: 'vite:dynamic-import-vars',
+          resolveId: {
+            filter: { id: /^ vite\/dynamic\-import\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          load: {
+            filter: { id: /^ vite\/dynamic\-import\-helper\.js$/ },
+            handler: [Function: handler]
+          },
+          transform: {
+            filter: {
+              id: {
+                exclude: /^\/Users\/dayan\/Proyecto\/Kashless\/node_modules\/vite\/dist\/client\/client\.mjs$/
+              },
+              code: /\bimport\s*[(/]/
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:import-glob',
+          buildStart: [Function: buildStart],
+          transform: {
+            filter: { code: 'import.meta.glob' },
+            handler: [AsyncFunction: handler]
+          },
+          hotUpdate: [Function: hotUpdate]
+        },
+        {
+          name: 'vite:client-inject',
+          buildStart: [AsyncFunction: buildStart],
+          transform: [AsyncFunction: transform]
+        },
+        {
+          name: 'vite:css-analysis',
+          transform: {
+            filter: {
+              id: {
+                include: /\.(css|less|sass|scss|styl|stylus|pcss|postcss|sss)(?:$|\?)/,
+                exclude: [
+                  /[?&]commonjs-proxy/,
+                  /[?&](?:worker|sharedworker|raw|url)\b/
+                ]
+              }
+            },
+            handler: [AsyncFunction: handler]
+          }
+        },
+        {
+          name: 'vite:import-analysis',
+          transform: [AsyncFunction: transform]
+        }
+      ]
+    }
+  },
+  configFile: '/Users/dayan/Proyecto/Kashless/vite.config.js',
+  configFileDependencies: [ '/Users/dayan/Proyecto/Kashless/vite.config.js' ],
+  inlineConfig: {
+    root: undefined,
+    base: undefined,
+    mode: undefined,
+    configFile: undefined,
+    configLoader: undefined,
+    logLevel: undefined,
+    clearScreen: undefined,
+    server: {},
+    forceOptimizeDeps: undefined
+  },
+  root: '/Users/dayan/Proyecto/Kashless',
+  decodedBase: '/',
+  rawBase: '/',
+  publicDir: '/Users/dayan/Proyecto/Kashless/public',
+  cacheDir: '/Users/dayan/Proyecto/Kashless/node_modules/.vite',
+  command: 'serve',
+  mode: 'development',
+  isWorker: false,
+  mainConfig: null,
+  bundleChain: [],
+  isProduction: false,
+  css: {
+    transformer: 'postcss',
+    preprocessorMaxWorkers: true,
+    devSourcemap: false
+  },
+  json: { namedExports: true, stringify: 'auto' },
+  builder: undefined,
+  preview: {
+    port: 4173,
+    strictPort: false,
+    host: true,
+    allowedHosts: [],
+    https: undefined,
+    open: false,
+    proxy: undefined,
+    cors: {
+      origin: /^https?:\/\/(?:(?:[^:]+\.)?localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/
+    },
+    headers: {}
+  },
+  envDir: '/Users/dayan/Proyecto/Kashless',
+  env: { BASE_URL: '/', MODE: 'development', DEV: true, PROD: false },
+  assetsInclude: [Function: assetsInclude],
+  logger: {
+    hasWarned: false,
+    info: [Function: info],
+    warn: [Function: warn],
+    warnOnce: [Function: warnOnce],
+    error: [Function: error],
+    clearScreen: [Function: clearScreen],
+    hasErrorLogged: [Function: hasErrorLogged]
+  },
+  packageCache: Map(1) {
+    'fnpd_/Users/dayan/Proyecto/Kashless' => {
+      dir: '/Users/dayan/Proyecto/Kashless',
+      data: {
+        name: 'kashless-pwa',
+        private: true,
+        version: '0.0.0',
+        type: 'module',
+        scripts: {
+          dev: 'vite',
+          build: 'vite build',
+          lint: 'eslint .',
+          preview: 'vite preview',
+          'build:ios': 'node build-and-copy.js',
+          'cap:ios': 'npm run build:ios && npx cap open ios'
+        },
+        dependencies: {
+          '@capacitor/android': '^7.4.3',
+          '@capacitor/ios': '^7.4.3',
+          '@config-plugins/react-native-ble-plx': '^7.0.0',
+          '@dataconnect/generated': 'file:src/dataconnect-generated',
+          '@fortawesome/free-solid-svg-icons': '^7.0.0',
+          '@fortawesome/react-fontawesome': '^3.0.1',
+          buffer: '^6.0.3',
+          'crypto-browserify': '^3.12.1',
+          firebase: '^12.2.1',
+          'firebase-admin': '^13.5.0',
+          'firebase-functions': '^6.4.0',
+          'html5-qrcode': '^2.3.8',
+          react: '^19.1.1',
+          'react-dom': '^19.1.1',
+          'react-native-ble-plx': '^3.5.0',
+          'react-native-web': '^0.21.1',
+          'react-router-dom': '^7.8.2',
+          'stream-browserify': '^3.0.0'
+        },
+        devDependencies: {
+          '@capacitor/cli': '^7.4.3',
+          '@capacitor/core': '^7.4.3',
+          '@esbuild-plugins/node-globals-polyfill': '^0.2.3',
+          '@eslint/js': '^9.33.0',
+          '@react-native-community/cli': '^20.0.1',
+          '@types/react': '^19.1.10',
+          '@types/react-dom': '^19.1.7',
+          '@vitejs/plugin-react': '^5.0.2',
+          '@vitejs/plugin-react-swc': '^4.0.1',
+          eslint: '^9.33.0',
+          'eslint-plugin-react-hooks': '^5.2.0',
+          'eslint-plugin-react-refresh': '^0.4.20',
+          globals: '^16.3.0',
+          vite: '^7.1.2'
+        },
+        description: 'This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.',
+        main: 'eslint.config.js',
+        repository: {
+          type: 'git',
+          url: 'git+https://github.com/dayan73a/Kashless.git'
+        },
+        keywords: [],
+        author: '',
+        license: 'ISC',
+        bugs: { url: 'https://github.com/dayan73a/Kashless/issues' },
+        homepage: 'https://github.com/dayan73a/Kashless#readme'
+      },
+      hasSideEffects: [Function: hasSideEffects],
+      setResolvedCache: [Function: setResolvedCache],
+      getResolvedCache: [Function: getResolvedCache]
+    },
+    set: [Function (anonymous)]
+  },
+  worker: { format: 'iife', plugins: '() => plugins', rollupOptions: {} },
+  appType: 'spa',
+  experimental: {
+    importGlobRestoreExtension: false,
+    renderBuiltUrl: undefined,
+    hmrPartialAccept: false
+  },
+  future: undefined,
+  ssr: {
+    target: 'node',
+    optimizeDeps: {
+      esbuildOptions: { preserveSymlinks: false },
+      include: [],
+      exclude: [],
+      needsInterop: [],
+      extensions: [],
+      holdUntilCrawlEnd: true,
+      force: false,
+      noDiscovery: true
+    },
+    external: [],
+    noExternal: [],
+    resolve: {
+      conditions: [ 'module', 'node', 'development|production' ],
+      externalConditions: [ 'node', 'module-sync' ]
+    }
+  },
+  dev: {
+    warmup: [],
+    sourcemap: { js: true },
+    sourcemapIgnoreList: [Function: isInNodeModules],
+    preTransformRequests: false,
+    createEnvironment: [Function: defaultCreateDevEnvironment],
+    recoverable: false,
+    moduleRunnerTransform: false
+  },
+  webSocketToken: 'YBMzfRNiq833',
+  getSortedPlugins: [Function: getSortedPlugins],
+  getSortedPluginHooks: [Function: getSortedPluginHooks],
+  createResolver: [Function: createResolver],
+  fsDenyGlob: [Function: arrayMatcher],
+  safeModulePaths: Set(0) {},
+  [Symbol(vite:resolved-config)]: true
+}
+2025-09-08T03:43:06.522Z vite:deps (client) removing old cache dir /Users/dayan/Proyecto/Kashless/node_modules/.vite/deps
+2025-09-08T03:43:06.524Z vite:resolve 0.69ms buffer -> /Users/dayan/Proyecto/Kashless/node_modules/buffer/index.js
+2025-09-08T03:43:06.525Z vite:resolve 0.35ms stream-browserify -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/index.js
+2025-09-08T03:43:06.525Z vite:resolve 0.29ms crypto-browserify -> /Users/dayan/Proyecto/Kashless/node_modules/crypto-browserify/index.js
+2025-09-08T03:43:06.526Z vite:resolve 0.48ms react/jsx-dev-runtime -> /Users/dayan/Proyecto/Kashless/node_modules/react/jsx-dev-runtime.js
+2025-09-08T03:43:06.527Z vite:deps scanning for dependencies...
+2025-09-08T03:43:06.528Z vite:deps Crawling dependencies using entries: 
+  /Users/dayan/Proyecto/Kashless/index.html
+
+  VITE v7.1.4  ready in 237 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.0.145:5173/
+  ➜  press h + enter to show help
+2025-09-08T03:43:06.543Z vite:resolve 0.06ms /src/main.jsx -> /Users/dayan/Proyecto/Kashless/src/main.jsx
+2025-09-08T03:43:06.546Z vite:resolve 0.22ms react -> /Users/dayan/Proyecto/Kashless/node_modules/react/index.js
+2025-09-08T03:43:06.546Z vite:resolve 0.26ms react-dom/client -> /Users/dayan/Proyecto/Kashless/node_modules/react-dom/client.js
+2025-09-08T03:43:06.547Z vite:resolve 0.05ms ./App.jsx -> /Users/dayan/Proyecto/Kashless/src/App.jsx
+2025-09-08T03:43:06.547Z vite:resolve 0.06ms ./context/AppContext -> /Users/dayan/Proyecto/Kashless/src/context/AppContext.jsx
+2025-09-08T03:43:06.547Z vite:resolve 0.05ms ./firebase -> /Users/dayan/Proyecto/Kashless/src/firebase.ts
+2025-09-08T03:43:06.548Z vite:resolve 0.30ms react-router-dom -> /Users/dayan/Proyecto/Kashless/node_modules/react-router-dom/dist/index.mjs
+2025-09-08T03:43:06.548Z vite:resolve 0.20ms react/jsx-dev-runtime -> /Users/dayan/Proyecto/Kashless/node_modules/react/jsx-dev-runtime.js
+2025-09-08T03:43:06.551Z vite:resolve 0.40ms firebase/app -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/app/dist/esm/index.esm.js
+2025-09-08T03:43:06.551Z vite:resolve 0.08ms ../firebase -> /Users/dayan/Proyecto/Kashless/src/firebase.ts
+2025-09-08T03:43:06.551Z vite:resolve 0.19ms firebase/auth -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/auth/dist/esm/index.esm.js
+2025-09-08T03:43:06.552Z vite:resolve 0.12ms firebase/firestore -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/firestore/dist/esm/index.esm.js
+2025-09-08T03:43:06.552Z vite:resolve 0.11ms firebase/storage -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/storage/dist/esm/index.esm.js
+2025-09-08T03:43:06.562Z vite:deps Scan completed in 35.07ms: 
+  firebase/app -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/app/dist/esm/index.esm.js
+  firebase/auth -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/auth/dist/esm/index.esm.js
+  firebase/firestore -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/firestore/dist/esm/index.esm.js
+  firebase/storage -> /Users/dayan/Proyecto/Kashless/node_modules/firebase/storage/dist/esm/index.esm.js
+  react -> /Users/dayan/Proyecto/Kashless/node_modules/react/index.js
+  react-dom/client -> /Users/dayan/Proyecto/Kashless/node_modules/react-dom/client.js
+  react-router-dom -> /Users/dayan/Proyecto/Kashless/node_modules/react-router-dom/dist/index.mjs
+  react/jsx-dev-runtime -> /Users/dayan/Proyecto/Kashless/node_modules/react/jsx-dev-runtime.js
+2025-09-08T03:43:06.562Z vite:deps creating package.json in /Users/dayan/Proyecto/Kashless/node_modules/.vite/deps_temp_9b50714c
+2025-09-08T03:43:06.571Z vite:resolve 2.13ms react-router/dom -> /Users/dayan/Proyecto/Kashless/node_modules/react-router/dist/development/dom-export.mjs
+2025-09-08T03:43:06.571Z vite:resolve 2.15ms @firebase/firestore -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/firestore/dist/index.esm.js
+2025-09-08T03:43:06.573Z vite:resolve 2.26ms @firebase/app -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/app/dist/esm/index.esm.js
+2025-09-08T03:43:06.573Z vite:resolve 2.23ms @firebase/storage -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/storage/dist/index.esm.js
+2025-09-08T03:43:06.573Z vite:resolve 2.22ms @firebase/auth -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/auth/dist/esm/index.js
+2025-09-08T03:43:06.573Z vite:resolve 0.77ms events -> __vite-browser-external:events
+2025-09-08T03:43:06.573Z vite:resolve 0.77ms randombytes -> /Users/dayan/Proyecto/Kashless/node_modules/randombytes/browser.js
+2025-09-08T03:43:06.573Z vite:resolve 0.77ms react -> /Users/dayan/Proyecto/Kashless/node_modules/react/index.js
+2025-09-08T03:43:06.573Z vite:resolve 0.77ms base64-js -> /Users/dayan/Proyecto/Kashless/node_modules/base64-js/index.js
+2025-09-08T03:43:06.577Z vite:resolve 1.61ms react-router -> /Users/dayan/Proyecto/Kashless/node_modules/react-router/dist/development/index.mjs
+2025-09-08T03:43:06.577Z vite:resolve 1.62ms inherits -> /Users/dayan/Proyecto/Kashless/node_modules/inherits/inherits_browser.js
+2025-09-08T03:43:06.577Z vite:resolve 1.61ms create-hash -> /Users/dayan/Proyecto/Kashless/node_modules/create-hash/browser.js
+2025-09-08T03:43:06.577Z vite:resolve 1.61ms ieee754 -> /Users/dayan/Proyecto/Kashless/node_modules/ieee754/index.js
+2025-09-08T03:43:06.577Z vite:resolve 1.59ms @firebase/component -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/component/dist/esm/index.esm.js
+2025-09-08T03:43:06.578Z vite:deps ✨ static imports crawl ended
+2025-09-08T03:43:06.579Z vite:resolve 1.04ms create-hmac -> /Users/dayan/Proyecto/Kashless/node_modules/create-hmac/browser.js
+2025-09-08T03:43:06.579Z vite:resolve 1.04ms readable-stream/lib/_stream_readable.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_readable.js
+2025-09-08T03:43:06.579Z vite:resolve 1.04ms @firebase/util -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/util/dist/index.esm.js
+2025-09-08T03:43:06.579Z vite:resolve 1.03ms @firebase/logger -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/logger/dist/esm/index.esm.js
+2025-09-08T03:43:06.580Z vite:resolve 0.14ms react -> /Users/dayan/Proyecto/Kashless/node_modules/react/index.js
+2025-09-08T03:43:06.581Z vite:resolve 0.42ms readable-stream/lib/_stream_writable.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_writable.js
+2025-09-08T03:43:06.581Z vite:resolve 0.42ms browserify-sign/algos -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-sign/algos.js
+2025-09-08T03:43:06.581Z vite:resolve 0.40ms react-dom -> /Users/dayan/Proyecto/Kashless/node_modules/react-dom/index.js
+2025-09-08T03:43:06.582Z vite:resolve 0.72ms pbkdf2 -> /Users/dayan/Proyecto/Kashless/node_modules/pbkdf2/browser.js
+2025-09-08T03:43:06.582Z vite:resolve 0.73ms readable-stream/lib/_stream_duplex.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_duplex.js
+2025-09-08T03:43:06.582Z vite:resolve 0.66ms idb -> /Users/dayan/Proyecto/Kashless/node_modules/idb/build/index.js
+2025-09-08T03:43:06.583Z vite:resolve 0.31ms readable-stream/lib/_stream_transform.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_transform.js
+2025-09-08T03:43:06.583Z vite:resolve 0.31ms react -> /Users/dayan/Proyecto/Kashless/node_modules/react/index.js
+2025-09-08T03:43:06.583Z vite:resolve 0.31ms browserify-cipher -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-cipher/browser.js
+2025-09-08T03:43:06.585Z vite:resolve 1.58ms diffie-hellman -> /Users/dayan/Proyecto/Kashless/node_modules/diffie-hellman/browser.js
+2025-09-08T03:43:06.585Z vite:resolve 0.09ms readable-stream/lib/_stream_passthrough.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/_stream_passthrough.js
+2025-09-08T03:43:06.587Z vite:resolve 0.08ms browserify-sign -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-sign/browser/index.js
+2025-09-08T03:43:06.593Z vite:resolve 1.28ms create-ecdh -> /Users/dayan/Proyecto/Kashless/node_modules/create-ecdh/browser.js
+2025-09-08T03:43:06.593Z vite:resolve 1.29ms readable-stream/lib/internal/streams/end-of-stream.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
+2025-09-08T03:43:06.593Z vite:resolve 0.23ms cookie -> /Users/dayan/Proyecto/Kashless/node_modules/react-router/node_modules/cookie/dist/index.js
+2025-09-08T03:43:06.595Z vite:resolve 0.94ms public-encrypt -> /Users/dayan/Proyecto/Kashless/node_modules/public-encrypt/browser.js
+2025-09-08T03:43:06.595Z vite:resolve 0.94ms set-cookie-parser -> /Users/dayan/Proyecto/Kashless/node_modules/set-cookie-parser/lib/set-cookie.js
+2025-09-08T03:43:06.595Z vite:resolve 0.05ms readable-stream/lib/internal/streams/pipeline.js -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/node_modules/readable-stream/lib/internal/streams/pipeline.js
+2025-09-08T03:43:06.595Z vite:resolve 0.36ms randomfill -> /Users/dayan/Proyecto/Kashless/node_modules/randomfill/browser.js
+2025-09-08T03:43:06.599Z vite:resolve 2.93ms util-deprecate -> /Users/dayan/Proyecto/Kashless/node_modules/util-deprecate/browser.js
+2025-09-08T03:43:06.599Z vite:resolve 2.95ms scheduler -> /Users/dayan/Proyecto/Kashless/node_modules/scheduler/index.js
+2025-09-08T03:43:06.599Z vite:resolve 2.95ms events -> __vite-browser-external:events
+2025-09-08T03:43:06.600Z vite:resolve 0.96ms safe-buffer -> /Users/dayan/Proyecto/Kashless/node_modules/safe-buffer/index.js
+2025-09-08T03:43:06.600Z vite:resolve 0.92ms browserify-des -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-des/index.js
+2025-09-08T03:43:06.601Z vite:resolve 0.75ms elliptic -> /Users/dayan/Proyecto/Kashless/node_modules/elliptic/lib/elliptic.js
+2025-09-08T03:43:06.601Z vite:resolve 0.75ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/diffie-hellman/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.602Z vite:resolve 0.60ms create-hash/md5 -> /Users/dayan/Proyecto/Kashless/node_modules/pbkdf2/node_modules/create-hash/md5.js
+2025-09-08T03:43:06.602Z vite:resolve 0.60ms randombytes -> /Users/dayan/Proyecto/Kashless/node_modules/randombytes/browser.js
+2025-09-08T03:43:06.602Z vite:resolve 0.59ms md5.js -> /Users/dayan/Proyecto/Kashless/node_modules/md5.js/index.js
+2025-09-08T03:43:06.603Z vite:resolve 1.43ms buffer -> /Users/dayan/Proyecto/Kashless/node_modules/buffer/index.js
+2025-09-08T03:43:06.603Z vite:resolve 1.51ms parse-asn1 -> /Users/dayan/Proyecto/Kashless/node_modules/parse-asn1/index.js
+2025-09-08T03:43:06.603Z vite:resolve 1.50ms browserify-aes/browser -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-aes/browser.js
+2025-09-08T03:43:06.603Z vite:resolve 1.33ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/create-ecdh/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.603Z vite:resolve 1.32ms react-dom -> /Users/dayan/Proyecto/Kashless/node_modules/react-dom/index.js
+2025-09-08T03:43:06.604Z vite:resolve 0.51ms cipher-base -> /Users/dayan/Proyecto/Kashless/node_modules/cipher-base/index.js
+2025-09-08T03:43:06.604Z vite:resolve 0.51ms miller-rabin -> /Users/dayan/Proyecto/Kashless/node_modules/miller-rabin/lib/mr.js
+2025-09-08T03:43:06.606Z vite:resolve 0.57ms ripemd160 -> /Users/dayan/Proyecto/Kashless/node_modules/pbkdf2/node_modules/ripemd160/index.js
+2025-09-08T03:43:06.606Z vite:resolve 0.58ms ripemd160 -> /Users/dayan/Proyecto/Kashless/node_modules/ripemd160/index.js
+2025-09-08T03:43:06.606Z vite:resolve 0.54ms browserify-aes/modes -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-aes/modes/index.js
+2025-09-08T03:43:06.607Z vite:resolve 0.59ms readable-stream -> /Users/dayan/Proyecto/Kashless/node_modules/readable-stream/readable-browser.js
+2025-09-08T03:43:06.607Z vite:resolve 0.49ms util -> __vite-browser-external
+2025-09-08T03:43:06.607Z vite:resolve 0.49ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/public-encrypt/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.608Z vite:resolve 0.86ms sha.js -> /Users/dayan/Proyecto/Kashless/node_modules/sha.js/index.js
+2025-09-08T03:43:06.608Z vite:resolve 0.84ms browserify-des/modes -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-des/modes.js
+2025-09-08T03:43:06.608Z vite:resolve 0.84ms brorand -> /Users/dayan/Proyecto/Kashless/node_modules/brorand/index.js
+2025-09-08T03:43:06.608Z vite:resolve 0.84ms create-hash/md5 -> /Users/dayan/Proyecto/Kashless/node_modules/create-hash/md5.js
+2025-09-08T03:43:06.610Z vite:resolve 1.89ms browserify-rsa -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-rsa/index.js
+2025-09-08T03:43:06.610Z vite:resolve 1.90ms to-buffer -> /Users/dayan/Proyecto/Kashless/node_modules/to-buffer/index.js
+2025-09-08T03:43:06.610Z vite:resolve 1.89ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/miller-rabin/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.613Z vite:resolve 1.90ms crypto-browserify -> /Users/dayan/Proyecto/Kashless/node_modules/crypto-browserify/index.js
+2025-09-08T03:43:06.613Z vite:resolve 1.41ms buffer -> __vite-browser-external
+2025-09-08T03:43:06.613Z vite:resolve 1.98ms evp_bytestokey -> /Users/dayan/Proyecto/Kashless/node_modules/evp_bytestokey/index.js
+2025-09-08T03:43:06.613Z vite:resolve 1.54ms hash.js -> /Users/dayan/Proyecto/Kashless/node_modules/hash.js/lib/hash.js
+2025-09-08T03:43:06.613Z vite:resolve 1.52ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/elliptic/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.613Z vite:resolve 1.31ms core-util-is -> /Users/dayan/Proyecto/Kashless/node_modules/core-util-is/lib/util.js
+2025-09-08T03:43:06.613Z vite:resolve 1.30ms process-nextick-args -> /Users/dayan/Proyecto/Kashless/node_modules/process-nextick-args/index.js
+2025-09-08T03:43:06.613Z vite:resolve 1.99ms crypto -> /Users/dayan/Proyecto/Kashless/node_modules/crypto-browserify/index.js
+2025-09-08T03:43:06.615Z vite:resolve 1.79ms string_decoder/ -> /Users/dayan/Proyecto/Kashless/node_modules/string_decoder/lib/string_decoder.js
+2025-09-08T03:43:06.615Z vite:resolve 1.56ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.615Z vite:resolve 1.56ms hmac-drbg -> /Users/dayan/Proyecto/Kashless/node_modules/hmac-drbg/lib/hmac-drbg.js
+2025-09-08T03:43:06.615Z vite:resolve 1.54ms minimalistic-assert -> /Users/dayan/Proyecto/Kashless/node_modules/minimalistic-assert/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.49ms stream-browserify -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.62ms buffer-xor -> /Users/dayan/Proyecto/Kashless/node_modules/buffer-xor/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.44ms isarray -> /Users/dayan/Proyecto/Kashless/node_modules/isarray/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.43ms isarray -> /Users/dayan/Proyecto/Kashless/node_modules/to-buffer/node_modules/isarray/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.43ms hash-base -> /Users/dayan/Proyecto/Kashless/node_modules/hash-base/index.js
+2025-09-08T03:43:06.617Z vite:resolve 1.59ms stream -> /Users/dayan/Proyecto/Kashless/node_modules/stream-browserify/index.js
+2025-09-08T03:43:06.621Z vite:resolve 2.88ms minimalistic-crypto-utils -> /Users/dayan/Proyecto/Kashless/node_modules/minimalistic-crypto-utils/lib/utils.js
+2025-09-08T03:43:06.621Z vite:resolve 2.87ms des.js -> /Users/dayan/Proyecto/Kashless/node_modules/des.js/lib/des.js
+2025-09-08T03:43:06.621Z vite:resolve 2.86ms safe-buffer -> /Users/dayan/Proyecto/Kashless/node_modules/string_decoder/node_modules/safe-buffer/index.js
+2025-09-08T03:43:06.621Z vite:resolve 2.73ms hash-base -> /Users/dayan/Proyecto/Kashless/node_modules/pbkdf2/node_modules/hash-base/index.js
+2025-09-08T03:43:06.621Z vite:resolve 2.68ms typed-array-buffer -> /Users/dayan/Proyecto/Kashless/node_modules/typed-array-buffer/index.js
+2025-09-08T03:43:06.621Z vite:resolve 2.67ms string_decoder -> /Users/dayan/Proyecto/Kashless/node_modules/string_decoder/lib/string_decoder.js
+2025-09-08T03:43:06.622Z vite:resolve 0.26ms browserify-aes -> /Users/dayan/Proyecto/Kashless/node_modules/browserify-aes/browser.js
+2025-09-08T03:43:06.626Z vite:resolve 0.70ms safe-buffer -> /Users/dayan/Proyecto/Kashless/node_modules/readable-stream/node_modules/safe-buffer/index.js
+2025-09-08T03:43:06.626Z vite:resolve 0.71ms es-errors/type -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/type.js
+2025-09-08T03:43:06.628Z vite:resolve 0.85ms @firebase/webchannel-wrapper/bloom-blob -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/webchannel-wrapper/dist/bloom-blob/esm/bloom_blob_es2018.js
+2025-09-08T03:43:06.628Z vite:resolve 0.80ms call-bound -> /Users/dayan/Proyecto/Kashless/node_modules/call-bound/index.js
+2025-09-08T03:43:06.629Z vite:resolve 0.54ms asn1.js -> /Users/dayan/Proyecto/Kashless/node_modules/asn1.js/lib/asn1.js
+2025-09-08T03:43:06.629Z vite:resolve 0.29ms is-typed-array -> /Users/dayan/Proyecto/Kashless/node_modules/is-typed-array/index.js
+2025-09-08T03:43:06.629Z vite:resolve 0.30ms @firebase/webchannel-wrapper/webchannel-blob -> /Users/dayan/Proyecto/Kashless/node_modules/@firebase/webchannel-wrapper/dist/webchannel-blob/esm/webchannel_blob_es2018.js
+2025-09-08T03:43:06.631Z vite:resolve 0.34ms bn.js -> /Users/dayan/Proyecto/Kashless/node_modules/asn1.js/node_modules/bn.js/lib/bn.js
+2025-09-08T03:43:06.632Z vite:resolve 0.85ms which-typed-array -> /Users/dayan/Proyecto/Kashless/node_modules/which-typed-array/index.js
+2025-09-08T03:43:06.632Z vite:resolve 0.86ms get-intrinsic -> /Users/dayan/Proyecto/Kashless/node_modules/get-intrinsic/index.js
+2025-09-08T03:43:06.633Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:06.633Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.633Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.634Z vite:resolve 0.68ms call-bind-apply-helpers -> /Users/dayan/Proyecto/Kashless/node_modules/call-bind-apply-helpers/index.js
+2025-09-08T03:43:06.634Z vite:resolve 0.68ms vm -> __vite-browser-external:vm
+2025-09-08T03:43:06.634Z vite:resolve 0.61ms for-each -> /Users/dayan/Proyecto/Kashless/node_modules/for-each/index.js
+2025-09-08T03:43:06.635Z vite:resolve 0.24ms available-typed-arrays -> /Users/dayan/Proyecto/Kashless/node_modules/available-typed-arrays/index.js
+2025-09-08T03:43:06.635Z vite:resolve 0.21ms call-bind -> /Users/dayan/Proyecto/Kashless/node_modules/call-bind/index.js
+2025-09-08T03:43:06.635Z vite:resolve 0.43ms es-object-atoms -> /Users/dayan/Proyecto/Kashless/node_modules/es-object-atoms/index.js
+2025-09-08T03:43:06.635Z vite:resolve 0.43ms function-bind -> /Users/dayan/Proyecto/Kashless/node_modules/function-bind/index.js
+2025-09-08T03:43:06.636Z vite:resolve 0.27ms es-errors -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/index.js
+2025-09-08T03:43:06.636Z vite:resolve 0.28ms gopd -> /Users/dayan/Proyecto/Kashless/node_modules/gopd/index.js
+2025-09-08T03:43:06.636Z vite:resolve 0.04ms es-errors/eval -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/eval.js
+2025-09-08T03:43:06.636Z vite:resolve 0.18ms get-proto -> /Users/dayan/Proyecto/Kashless/node_modules/get-proto/index.js
+2025-09-08T03:43:06.637Z vite:resolve 0.36ms es-errors/range -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/range.js
+2025-09-08T03:43:06.637Z vite:resolve 0.35ms has-tostringtag/shams -> /Users/dayan/Proyecto/Kashless/node_modules/has-tostringtag/shams.js
+2025-09-08T03:43:06.637Z vite:resolve 0.20ms es-errors/ref -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/ref.js
+2025-09-08T03:43:06.637Z vite:resolve 0.43ms has-symbols/shams -> /Users/dayan/Proyecto/Kashless/node_modules/has-symbols/shams.js
+2025-09-08T03:43:06.637Z vite:resolve 0.43ms possible-typed-array-names -> /Users/dayan/Proyecto/Kashless/node_modules/possible-typed-array-names/index.js
+2025-09-08T03:43:06.638Z vite:resolve 0.69ms dunder-proto/get -> /Users/dayan/Proyecto/Kashless/node_modules/dunder-proto/get.js
+2025-09-08T03:43:06.638Z vite:resolve 0.69ms es-errors/syntax -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/syntax.js
+2025-09-08T03:43:06.638Z vite:resolve 0.69ms set-function-length -> /Users/dayan/Proyecto/Kashless/node_modules/set-function-length/index.js
+2025-09-08T03:43:06.638Z vite:resolve 0.69ms is-callable -> /Users/dayan/Proyecto/Kashless/node_modules/is-callable/index.js
+2025-09-08T03:43:06.639Z vite:resolve 0.12ms es-define-property -> /Users/dayan/Proyecto/Kashless/node_modules/es-define-property/index.js
+2025-09-08T03:43:06.639Z vite:resolve 0.11ms es-errors/uri -> /Users/dayan/Proyecto/Kashless/node_modules/es-errors/uri.js
+2025-09-08T03:43:06.639Z vite:resolve 0.03ms call-bind-apply-helpers/applyBind -> /Users/dayan/Proyecto/Kashless/node_modules/call-bind-apply-helpers/applyBind.js
+2025-09-08T03:43:06.639Z vite:resolve 0.21ms math-intrinsics/abs -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/abs.js
+2025-09-08T03:43:06.639Z vite:resolve 0.06ms math-intrinsics/floor -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/floor.js
+2025-09-08T03:43:06.640Z vite:resolve 0.22ms define-data-property -> /Users/dayan/Proyecto/Kashless/node_modules/define-data-property/index.js
+2025-09-08T03:43:06.640Z vite:resolve 0.03ms math-intrinsics/max -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/max.js
+2025-09-08T03:43:06.640Z vite:resolve 0.10ms has-property-descriptors -> /Users/dayan/Proyecto/Kashless/node_modules/has-property-descriptors/index.js
+2025-09-08T03:43:06.640Z vite:resolve 0.02ms math-intrinsics/min -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/min.js
+2025-09-08T03:43:06.640Z vite:resolve 0.03ms math-intrinsics/pow -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/pow.js
+2025-09-08T03:43:06.640Z vite:resolve 0.03ms math-intrinsics/round -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/round.js
+2025-09-08T03:43:06.640Z vite:resolve 0.04ms math-intrinsics/sign -> /Users/dayan/Proyecto/Kashless/node_modules/math-intrinsics/sign.js
+2025-09-08T03:43:06.641Z vite:resolve 0.03ms has-symbols -> /Users/dayan/Proyecto/Kashless/node_modules/has-symbols/index.js
+2025-09-08T03:43:06.641Z vite:resolve 0.04ms get-proto/Object.getPrototypeOf -> /Users/dayan/Proyecto/Kashless/node_modules/get-proto/Object.getPrototypeOf.js
+2025-09-08T03:43:06.641Z vite:resolve 0.04ms get-proto/Reflect.getPrototypeOf -> /Users/dayan/Proyecto/Kashless/node_modules/get-proto/Reflect.getPrototypeOf.js
+2025-09-08T03:43:06.641Z vite:resolve 0.04ms call-bind-apply-helpers/functionApply -> /Users/dayan/Proyecto/Kashless/node_modules/call-bind-apply-helpers/functionApply.js
+2025-09-08T03:43:06.641Z vite:resolve 0.03ms call-bind-apply-helpers/functionCall -> /Users/dayan/Proyecto/Kashless/node_modules/call-bind-apply-helpers/functionCall.js
+2025-09-08T03:43:06.641Z vite:resolve 0.47ms hasown -> /Users/dayan/Proyecto/Kashless/node_modules/hasown/index.js
+2025-09-08T03:43:06.712Z vite:deps Dependencies bundled in 148.73ms
+2025-09-08T03:43:06.712Z vite:deps ✨ using post-scan optimizer result, the scanner found every used dependency
+2025-09-08T03:43:06.712Z vite:deps creating _metadata.json in /Users/dayan/Proyecto/Kashless/node_modules/.vite/deps_temp_9b50714c
+2025-09-08T03:43:06.713Z vite:deps renaming /Users/dayan/Proyecto/Kashless/node_modules/.vite/deps_temp_9b50714c to /Users/dayan/Proyecto/Kashless/node_modules/.vite/deps
+2025-09-08T03:43:06.713Z vite:deps ✨ dependencies optimized
+2025-09-08T03:43:06.732Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:06.732Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.732Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.833Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:06.833Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.833Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.934Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:06.935Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:06.935Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.036Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.037Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.037Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.136Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.137Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.137Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.237Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.237Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.237Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.338Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.339Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.339Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.441Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.441Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.441Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.540Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.540Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.540Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.640Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.640Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.640Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.741Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.741Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.741Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.841Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.841Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.841Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.942Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:07.943Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:07.943Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.042Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.042Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.043Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.143Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.143Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.143Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.243Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.243Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.243Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.343Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.343Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.343Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.444Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.444Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.444Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.544Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.544Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.545Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.645Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.645Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.645Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.745Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.746Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.746Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.846Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.846Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.846Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.947Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:08.947Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:08.947Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.047Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.047Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.047Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.147Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.148Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.148Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.248Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.248Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.248Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.348Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.348Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.348Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.449Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.449Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.449Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.549Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.550Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.550Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.649Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.649Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.649Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.749Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.749Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.749Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.849Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.849Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.850Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.951Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:09.951Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:09.951Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.051Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.051Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.051Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.151Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.151Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.151Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.252Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.252Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.252Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.353Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.353Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.353Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.454Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.454Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.454Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.554Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.555Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.555Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.656Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.656Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.656Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.756Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.756Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.756Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.856Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.856Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.856Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.956Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:10.956Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:10.956Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.056Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.056Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.056Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.157Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.157Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.157Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.259Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.259Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.259Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.359Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.359Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.359Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.459Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.459Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.459Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.560Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.560Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.560Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.660Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.661Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.661Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.761Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.761Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.761Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.863Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.863Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.863Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.963Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:11.964Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:11.964Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.065Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.065Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.065Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.166Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.166Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.166Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.267Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.267Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.268Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.368Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.368Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.368Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.470Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.471Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.471Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.571Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.572Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.572Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.673Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.673Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.673Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.773Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.773Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.774Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.874Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.875Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.875Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.975Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:12.976Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:12.976Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.077Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.077Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.077Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.178Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.178Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.178Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.278Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.279Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.279Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.379Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.379Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.379Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.481Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.481Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.481Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.582Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.582Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.582Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.684Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.684Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.684Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.784Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.785Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.785Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.886Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.886Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.886Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.986Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:13.986Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:13.987Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.087Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.087Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.087Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.189Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.189Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.189Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.290Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.290Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.290Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.390Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.391Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.391Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.491Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.491Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.491Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.595Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.595Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.595Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.693Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.693Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.693Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.795Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.795Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.795Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.896Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.896Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.896Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.997Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:14.998Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:14.998Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.099Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.099Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.099Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.199Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.199Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.199Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.299Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.300Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.300Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.400Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.401Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.401Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.502Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.502Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.502Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.602Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.603Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.603Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.704Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.704Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.704Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.805Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.805Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.805Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.906Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:15.907Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:15.907Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.007Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.008Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.008Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.109Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.109Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.109Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.210Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.210Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.210Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.310Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.310Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.310Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.410Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.410Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.410Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.510Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.510Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.510Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.609Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.610Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.610Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.711Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.711Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.711Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.811Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.811Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.811Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.911Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:16.912Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:16.912Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.012Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.013Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.013Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.113Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.113Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.113Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.214Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.214Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.214Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.315Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.316Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.316Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.416Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.417Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.417Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.517Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.517Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.518Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.619Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.619Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.619Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.718Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.718Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.718Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.819Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.819Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.819Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.920Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:17.920Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:17.920Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.021Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.021Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.021Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.123Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.123Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.123Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.224Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.224Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.224Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.325Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.325Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.325Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.427Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.427Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.427Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.527Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.527Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.527Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.629Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.629Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.629Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.730Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.730Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.730Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.831Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.831Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.831Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.931Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:18.931Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:18.932Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.033Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.033Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.033Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.133Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.134Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.134Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.234Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.235Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.235Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.336Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.336Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.336Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.437Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.437Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.437Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.537Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.538Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.538Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.639Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.639Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.639Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.739Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.740Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.740Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.840Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.841Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.841Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.942Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:19.942Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:19.942Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.043Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.043Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.043Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.143Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.143Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.144Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.245Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.245Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.245Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.346Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.347Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.347Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.448Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.448Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.448Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.548Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.548Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.548Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.650Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.650Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.650Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.751Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.751Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.751Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.852Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.852Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.852Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.952Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:20.953Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:20.953Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.054Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.054Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.054Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.154Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.155Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.155Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.256Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.256Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.256Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.357Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.357Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.357Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.457Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.457Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.457Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.559Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.559Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.559Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.659Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.659Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.659Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.761Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.761Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.761Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.862Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.862Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.862Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.962Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:21.963Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:21.963Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.063Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.064Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.064Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.165Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.165Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.165Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.265Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.265Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.265Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.366Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.366Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.366Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.466Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.467Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.467Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.568Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.568Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.568Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.669Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.669Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.669Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.769Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.769Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.769Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.869Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.870Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.870Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.970Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:22.971Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:22.971Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.072Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.072Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.072Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.174Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.174Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.174Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.274Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.275Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.275Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.376Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.376Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.376Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.476Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.476Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.477Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.577Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.578Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.578Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.679Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.679Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.679Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.780Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.780Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.780Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.880Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.880Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.880Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.981Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:23.982Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:23.982Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.083Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.083Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.083Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.183Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.184Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.184Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.284Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.284Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.284Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.384Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.385Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.385Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.485Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.485Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.485Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.586Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.586Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.586Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.688Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.688Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.688Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.788Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.788Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.788Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.889Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.889Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.889Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.989Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:24.989Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:24.989Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.091Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.091Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.091Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.191Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.191Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.191Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.292Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.292Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.292Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.394Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.394Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.394Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.494Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.495Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.495Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.595Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.596Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.596Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.697Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.697Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.697Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.798Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.798Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.798Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.899Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:25.899Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:25.899Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.000Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.000Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.001Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.102Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.102Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.102Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.203Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.203Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.203Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.304Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.304Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.304Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.405Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.405Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.405Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.506Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.506Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.506Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.607Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.608Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.608Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.708Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.709Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.709Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.810Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.810Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.810Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.910Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:26.910Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:26.910Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.011Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.012Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.012Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.112Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.113Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.113Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.214Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.214Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.214Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.315Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.315Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.315Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.416Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.416Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.416Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.517Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.517Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.517Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.617Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.617Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.617Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.719Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.719Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.719Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.821Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.821Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.821Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.923Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:27.923Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:27.923Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.024Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.024Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.024Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.124Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.124Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.124Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.225Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.225Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.225Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.325Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.325Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.325Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.429Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.429Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.429Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.527Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.528Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.528Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.629Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.629Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.629Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.730Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.730Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.730Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.830Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.831Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.831Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.932Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:28.932Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:28.932Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.032Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.033Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.033Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.133Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.133Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.133Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.234Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.235Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.235Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.336Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.336Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.336Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.436Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.437Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.437Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.537Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.537Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.537Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.639Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.639Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.639Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.738Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.739Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.739Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.841Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.841Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.841Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.941Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:29.941Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:29.941Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.043Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.043Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.044Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.142Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.143Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.143Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.243Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.243Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.243Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.344Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.344Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.344Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.445Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.446Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.446Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.546Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.547Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.547Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.646Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.647Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.647Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.748Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.748Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.748Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.849Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.849Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.849Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.949Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:30.949Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:30.949Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.050Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.050Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.050Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.151Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.151Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.152Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.252Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.252Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.252Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.354Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.354Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.354Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.454Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.455Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.455Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.555Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.555Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.555Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.656Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.656Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.656Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.761Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.761Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.761Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.858Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.858Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.858Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.959Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:31.959Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:31.959Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.060Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.060Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.060Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.161Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.161Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.161Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.263Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.263Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.263Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.363Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.364Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.364Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.465Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.465Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.465Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.566Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.566Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.566Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.667Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.668Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.668Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.768Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.768Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.768Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.868Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.869Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.869Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.971Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:32.971Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:32.971Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.070Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.070Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.070Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.172Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.172Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.172Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.273Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.273Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.273Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.374Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.374Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.374Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.473Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.473Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.473Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.575Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.575Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.575Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.675Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.675Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.675Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.777Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.777Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.777Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.878Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.878Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.878Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.978Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:33.978Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:33.978Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.080Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.080Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.080Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.182Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.182Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.182Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.282Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.282Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.282Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.383Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.383Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.383Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.483Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.483Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.483Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.585Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.585Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.585Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.685Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.685Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.686Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.786Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.787Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.787Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.887Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.887Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.887Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.988Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:34.988Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:34.988Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.089Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.089Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.089Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.191Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.191Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.191Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.291Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.292Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.292Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.392Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.392Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.392Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.493Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.493Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.493Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.595Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.595Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.595Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.695Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.695Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.695Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.796Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.797Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.797Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.897Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.898Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.898Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.999Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:35.999Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:35.999Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.098Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.099Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.099Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.200Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.200Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.200Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.300Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.301Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.301Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.402Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.402Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.402Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.503Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.503Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.503Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.603Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.603Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.603Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.705Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.705Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.705Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.806Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.806Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.806Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.907Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:36.907Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:36.907Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.007Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.008Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.008Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.109Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.109Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.109Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.211Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.211Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.211Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.312Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.312Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.312Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.413Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.413Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.413Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.515Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.515Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.515Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.614Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.615Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.615Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.716Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.716Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.716Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.816Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.816Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.816Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.918Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:37.918Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:37.918Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.018Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.019Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.019Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.119Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.119Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.119Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.221Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.221Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.221Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.322Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.322Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.322Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.422Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.422Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.422Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.524Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.524Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.524Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.624Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.624Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.624Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.725Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.725Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.725Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.826Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.827Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.827Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.927Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:38.927Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:38.927Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.028Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.028Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.028Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.129Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.129Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.129Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.231Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.231Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.231Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.332Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.332Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.332Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.433Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.433Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.433Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.534Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.534Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.534Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.635Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.635Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.635Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.735Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.735Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.735Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.837Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.837Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.837Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.938Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:39.938Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:39.938Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.039Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.039Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.039Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.139Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.139Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.139Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.240Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.241Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.241Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.341Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.342Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.342Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.443Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.443Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.443Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.543Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.543Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.543Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.643Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.643Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.643Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.745Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.745Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.745Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.846Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.846Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.846Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.947Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:40.947Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:40.947Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.047Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.048Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.048Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.149Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.149Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.149Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.249Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.249Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.249Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.350Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.351Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.351Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.451Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.452Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.452Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.552Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.553Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.553Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.653Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.653Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.653Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.755Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.755Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.755Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.856Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.856Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.856Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.956Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:41.957Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:41.957Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.058Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.058Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.058Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.159Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.159Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.160Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.261Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.261Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.261Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.361Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.361Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.361Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.462Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.462Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.462Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.563Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.563Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.563Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.662Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.662Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.662Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.763Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.763Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.763Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.864Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.865Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.865Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.965Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:42.965Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:42.965Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.067Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.067Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.067Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.168Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.168Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.168Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.270Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.270Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.270Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.370Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.370Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.370Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.471Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.471Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.472Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.572Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.572Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.572Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.672Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.673Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.673Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.777Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.777Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.777Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.876Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.876Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.876Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.977Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:43.977Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:43.977Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.077Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.077Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.077Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.178Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.178Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.178Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.280Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.280Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.280Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.380Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.380Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.381Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.481Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.482Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.482Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.583Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.583Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.583Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.683Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.683Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.683Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.785Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.785Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.785Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.885Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.886Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.886Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.987Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:44.987Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:44.987Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.088Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.088Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.088Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.188Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.188Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.188Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.289Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.289Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.289Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.389Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.389Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.389Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.490Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.490Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.490Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.591Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.591Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.591Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.692Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.692Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.692Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.792Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.792Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.792Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.893Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.894Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.894Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.993Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:45.993Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:45.993Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.094Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.095Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.095Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.195Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.196Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.196Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.296Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.296Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.296Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.398Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.398Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.398Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.497Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.498Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.498Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.598Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.599Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.599Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.699Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.699Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.699Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.800Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.800Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.800Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.900Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:46.900Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:46.900Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.002Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.002Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.002Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.101Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.101Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.101Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.202Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.202Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.202Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.302Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.302Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.302Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.403Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.403Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.403Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.503Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.503Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.503Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.603Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.603Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.604Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.703Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.704Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.704Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.804Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.804Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.804Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.903Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:47.903Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:47.903Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.003Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.003Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.003Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.104Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.104Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.105Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.206Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.206Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.206Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.306Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.306Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.306Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.407Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.407Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.407Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.509Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.509Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.509Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.609Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.609Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.609Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.710Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.710Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.710Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.811Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.811Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.811Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.912Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:48.912Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:48.912Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.012Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.012Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.012Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.113Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.113Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.113Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.213Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.214Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.214Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.315Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.316Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.316Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.416Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.416Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.416Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.517Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.517Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.517Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.618Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.618Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.618Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.718Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.719Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.719Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.820Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.820Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.820Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.919Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:49.920Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:49.920Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.021Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.021Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.021Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.122Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.122Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.122Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.222Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.222Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.222Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.326Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.326Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.326Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.426Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.426Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.426Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.525Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.526Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.526Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.627Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.627Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.627Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.728Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.729Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.729Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.830Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.830Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.830Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.930Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:50.930Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:50.930Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.031Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.031Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.031Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.132Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.132Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.132Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.233Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.233Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.233Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.334Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.335Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.335Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.435Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.436Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.436Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.537Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.537Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.537Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.637Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.638Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.638Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.739Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.739Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.739Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.840Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.841Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.841Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.941Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:51.941Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:51.941Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.041Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.042Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.042Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.143Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.143Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.143Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.243Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.243Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.244Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.345Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.345Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.345Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.446Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.446Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.446Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.547Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.548Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.548Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.648Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.648Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.648Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.749Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.749Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.749Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.850Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.850Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.850Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.952Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:52.952Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:52.952Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.052Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.052Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.052Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.153Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.154Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.154Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.254Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.254Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.254Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.355Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.355Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.355Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.457Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.457Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.457Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.557Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.558Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.558Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.660Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.660Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.660Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.759Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.759Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.759Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.861Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.861Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.861Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.964Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:53.965Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:53.965Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.063Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.063Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.063Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.165Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.166Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.166Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.267Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.267Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.267Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.367Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.367Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.367Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.468Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.468Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.468Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.568Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.568Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.568Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.671Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.671Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.671Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.770Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.770Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.770Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.871Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.871Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.871Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.970Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:54.970Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:54.970Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.072Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.072Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.072Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.173Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.173Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.174Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.273Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.273Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.273Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.374Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.374Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.374Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.475Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.475Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.475Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.576Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.576Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.576Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.677Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.677Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.677Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.778Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.778Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.778Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.878Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.878Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.878Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.979Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:55.979Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:55.979Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.080Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.080Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.080Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.179Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.179Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.179Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.281Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.281Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.281Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.382Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.382Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.382Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.483Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.483Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.483Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.584Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.584Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.584Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.685Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.685Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.685Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.785Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.785Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.785Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.885Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.886Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.886Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.986Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:56.986Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:56.986Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.087Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.087Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.087Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.187Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.187Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.187Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.289Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.289Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.289Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.390Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.390Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.390Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.490Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.490Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.490Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.591Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.591Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.591Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.691Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.691Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.691Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.792Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.792Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.792Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.894Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.894Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.894Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.995Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:57.995Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:57.995Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.095Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.096Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.096Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.196Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.197Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.197Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.297Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.297Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.298Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.399Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.399Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.399Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.500Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.500Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.500Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.600Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.600Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.600Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.701Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.701Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.701Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.802Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.802Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.802Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.903Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:58.903Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:58.903Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.004Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.004Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.004Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.104Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.105Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.105Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.206Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.206Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.206Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.307Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.307Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.307Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.407Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.408Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.408Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.508Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.509Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.509Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.608Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.608Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.608Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.711Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.711Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.712Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.812Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.812Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.812Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.913Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:43:59.913Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:43:59.913Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.014Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.014Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.014Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.114Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.114Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.114Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.215Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.215Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.215Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.316Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.316Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.316Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.416Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.416Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.416Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.517Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.518Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.518Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.619Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.619Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.619Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.719Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.719Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.719Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.821Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.821Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.821Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.922Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:00.922Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:00.922Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.023Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.023Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.023Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.124Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.125Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.125Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.226Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.227Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.227Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.328Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.328Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.328Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.429Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.429Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.429Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.530Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.530Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.530Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.630Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.630Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.630Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.732Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.732Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.732Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.833Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.833Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.834Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.934Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:01.934Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:01.934Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.035Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.035Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.035Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.136Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.136Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.136Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.237Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.237Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.237Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.338Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.338Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.338Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.439Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.440Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.440Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.539Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.539Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.539Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.640Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.641Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.641Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.743Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.743Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.743Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.844Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.844Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.844Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.945Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:02.945Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:02.945Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.046Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.047Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.047Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.146Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.146Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.146Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.247Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.247Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.247Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.348Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.348Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.348Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.448Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.448Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.448Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.550Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.550Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.550Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.650Z vite:hmr [file change] logs_vite_dev.txt
+2025-09-08T03:44:03.650Z vite:hmr (client) [no modules matched] logs_vite_dev.txt
+2025-09-08T03:44:03.651Z vite:hmr (ssr) [no modules matched] logs_vite_dev.txt

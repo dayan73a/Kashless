@@ -5,3 +5,7 @@
   ➜  Local:   http://localhost:4173/
   ➜  Network: http://192.168.0.145:4173/
   ➜  press h + enter to show help
+
+  Shortcuts
+  press o + enter to open in browser
+  press q + enter to quit

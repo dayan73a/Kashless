@@ -15,4 +15,4 @@ dist/assets/index-NWGV_v7_.js  676.47 kB │ gzip: 178.59 kB
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 789ms
+✓ built in 833ms
